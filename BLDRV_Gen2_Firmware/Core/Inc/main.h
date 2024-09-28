@@ -65,12 +65,16 @@ void Error_Handler(void);
 #define PWM_A_H_GPIO_Port GPIOA
 #define PWM_A_L_Pin GPIO_PIN_11
 #define PWM_A_L_GPIO_Port GPIOA
+#define PWM_B_H_Pin GPIO_PIN_12
+#define PWM_B_H_GPIO_Port GPIOA
 #define SWDIO_Pin GPIO_PIN_13
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
 #define SWCLK_GPIO_Port GPIOA
 #define PWM_B_L_Pin GPIO_PIN_6
 #define PWM_B_L_GPIO_Port GPIOB
+#define PWM_C_H_Pin GPIO_PIN_7
+#define PWM_C_H_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
