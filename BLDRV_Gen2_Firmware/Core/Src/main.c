@@ -109,7 +109,23 @@ int16_t getRotation() {
     return rotation;
 }
 
+// 電気角
+uint16_t electrical_angle(int16_t offset) {
+    uint32_t rotation = getRotation() - offset;
+    rotation += 8192;
+    rotation %= 8192;
+
+    // 7回で一回転
+    rotation %= 1170;
+    rotation *= 360;
+    rotation /= 1170;
+    rotation %= 360;
+
+    return (uint16_t)rotation;
+}
+
 double cos_table[360];
+double sin_table[360];
 void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     uint16_t sinwave[3];
 
@@ -125,6 +141,27 @@ void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     // C相
     __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sinwave[2]);
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, sinwave[2]);
+}
+
+void setVoltage(double a, double b, double c) {
+    double batt_voltage = 17;  // バッテリー電圧
+
+    // 電圧値を 0-1023 の範囲にマッピングする
+    // 電圧 a, b, c をバッテリー電圧で正規化し、0〜1023の範囲にスケーリング
+    int int_a = (int)((a / batt_voltage) * 1023) + 512;
+    int int_b = (int)((b / batt_voltage) * 1023) + 512;
+    int int_c = (int)((c / batt_voltage) * 1023) + 512;
+
+    // PWM信号を各チャネルに設定
+    // A相
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, int_a);
+
+    // B相
+    __HAL_TIM_SET_COMPARE(&htim16, TIM_CHANNEL_1, int_b);
+
+    // C相
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, int_c);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, int_c);
 }
 
 char *uint2char(uint16_t num) {
@@ -211,6 +248,7 @@ int main(void) {
     /* USER CODE BEGIN WHILE */
     for (int i = 0; i < 360; i++) {
         cos_table[i] = cos(radians(i));
+        sin_table[i] = sin(radians(i));
     }
 
     dma_printf_puts("BLDRV Gen2\r\n");
@@ -229,26 +267,21 @@ int main(void) {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        uint16_t sinwave[3];
-        uint16_t pwm_pwr = 400;
+        uint16_t rotation = electrical_angle(offset);
 
-        static int phase = 0;
+        double vol_q = 7;
+        double vol_d = 0;
 
-        uint32_t rotation = getRotation() - offset;
-        rotation += 8192;
-        rotation %= 8192;
+        double vol_alpha =
+            vol_d * cos_table[rotation] - vol_q * sin_table[rotation];
+        double vol_beta =
+            vol_d * sin_table[rotation] + vol_q * cos_table[rotation];
 
-        // 7回で一回転
-        rotation %= 1170;
-        rotation *= 360;
-        rotation /= 1170;
-        rotation %= 360;
+        double vol_u = 0.81649658 * vol_alpha;
+        double vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
+        double vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
 
-        rotation += 90;
-        rotation %= 360;
-
-
-        setPhase(rotation, pwm_pwr);
+        setVoltage(vol_u, vol_v, vol_w);
 
         // dma_printf_puts("Angle: ");
         // dma_printf_puts(uint2char(rotation));
