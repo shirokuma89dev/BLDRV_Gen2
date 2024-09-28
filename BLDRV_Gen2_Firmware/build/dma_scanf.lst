@@ -1,0 +1,207 @@
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"dma_scanf.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/dma_scanf.c"
+  20              		.section	.text.dma_scanf_init,"ax",%progbits
+  21              		.align	1
+  22              		.global	dma_scanf_init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	dma_scanf_init:
+  28              	.LVL0:
+  29              	.LFB123:
+   1:Core/Src/dma_scanf.c **** //
+   2:Core/Src/dma_scanf.c **** // Created by naoki on 19/03/09.
+   3:Core/Src/dma_scanf.c **** //
+   4:Core/Src/dma_scanf.c **** 
+   5:Core/Src/dma_scanf.c **** #include "main.h"
+   6:Core/Src/dma_scanf.c **** #include "dma_ring.h"
+   7:Core/Src/dma_scanf.c **** #include "dma_scanf.h"
+   8:Core/Src/dma_scanf.c **** 
+   9:Core/Src/dma_scanf.c **** struct dma_scanf_info dsi;
+  10:Core/Src/dma_scanf.c **** 
+  11:Core/Src/dma_scanf.c **** void dma_scanf_init(UART_HandleTypeDef *scanf_huart){
+  30              		.loc 1 11 53 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 11 53 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0146     		mov	r1, r0
+  12:Core/Src/dma_scanf.c ****     dsi.huart = scanf_huart;
+  41              		.loc 1 12 5 is_stmt 1 view .LVU2
+  42              		.loc 1 12 15 is_stmt 0 view .LVU3
+  43 0004 064C     		ldr	r4, .L3
+  44 0006 C4F80C04 		str	r0, [r4, #1036]
+  13:Core/Src/dma_scanf.c ****     dma_ring_init(&dsi.rx_ring, scanf_huart);
+  45              		.loc 1 13 5 is_stmt 1 view .LVU4
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s 			page 2
+
+
+  46 000a 2046     		mov	r0, r4
+  47              	.LVL1:
+  48              		.loc 1 13 5 is_stmt 0 view .LVU5
+  49 000c FFF7FEFF 		bl	dma_ring_init
+  50              	.LVL2:
+  14:Core/Src/dma_scanf.c ****     HAL_UART_Receive_DMA(dsi.huart, dsi.rx_ring.buf, dsi.rx_ring.buf_size);
+  51              		.loc 1 14 5 is_stmt 1 view .LVU6
+  52 0010 B4F80024 		ldrh	r2, [r4, #1024]
+  53 0014 2146     		mov	r1, r4
+  54 0016 D4F80C04 		ldr	r0, [r4, #1036]
+  55 001a FFF7FEFF 		bl	HAL_UART_Receive_DMA
+  56              	.LVL3:
+  15:Core/Src/dma_scanf.c **** }
+  57              		.loc 1 15 1 is_stmt 0 view .LVU7
+  58 001e 10BD     		pop	{r4, pc}
+  59              	.L4:
+  60              		.align	2
+  61              	.L3:
+  62 0020 00000000 		.word	dsi
+  63              		.cfi_endproc
+  64              	.LFE123:
+  66              		.section	.text.dma_scanf_getc_blocking,"ax",%progbits
+  67              		.align	1
+  68              		.global	dma_scanf_getc_blocking
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  73              	dma_scanf_getc_blocking:
+  74              	.LFB124:
+  16:Core/Src/dma_scanf.c **** 
+  17:Core/Src/dma_scanf.c **** int dma_scanf_getc_blocking(){
+  75              		.loc 1 17 30 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 8
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79 0000 00B5     		push	{lr}
+  80              	.LCFI1:
+  81              		.cfi_def_cfa_offset 4
+  82              		.cfi_offset 14, -4
+  83 0002 83B0     		sub	sp, sp, #12
+  84              	.LCFI2:
+  85              		.cfi_def_cfa_offset 16
+  18:Core/Src/dma_scanf.c ****     while(dma_ring_available(&dsi.rx_ring) == 0){
+  86              		.loc 1 18 5 view .LVU9
+  87              		.loc 1 18 10 is_stmt 0 view .LVU10
+  88 0004 0BE0     		b	.L6
+  89              	.L7:
+  19:Core/Src/dma_scanf.c ****         dma_ring_set_w_ptr(&dsi.rx_ring, (uint16_t)((dsi.rx_ring.buf_size - __HAL_DMA_GET_COUNTER(d
+  90              		.loc 1 19 9 is_stmt 1 view .LVU11
+  91              		.loc 1 19 65 is_stmt 0 view .LVU12
+  92 0006 0D48     		ldr	r0, .L9
+  93 0008 B0F80014 		ldrh	r1, [r0, #1024]
+  94              		.loc 1 19 77 view .LVU13
+  95 000c D0F80C34 		ldr	r3, [r0, #1036]
+  96 0010 5B6F     		ldr	r3, [r3, #116]
+  97 0012 1B68     		ldr	r3, [r3]
+  98 0014 5B68     		ldr	r3, [r3, #4]
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s 			page 3
+
+
+  99              		.loc 1 19 9 view .LVU14
+ 100 0016 C91A     		subs	r1, r1, r3
+ 101 0018 89B2     		uxth	r1, r1
+ 102 001a FFF7FEFF 		bl	dma_ring_set_w_ptr
+ 103              	.LVL4:
+ 104              	.L6:
+  18:Core/Src/dma_scanf.c ****     while(dma_ring_available(&dsi.rx_ring) == 0){
+ 105              		.loc 1 18 44 is_stmt 1 view .LVU15
+  18:Core/Src/dma_scanf.c ****     while(dma_ring_available(&dsi.rx_ring) == 0){
+ 106              		.loc 1 18 11 is_stmt 0 view .LVU16
+ 107 001e 0748     		ldr	r0, .L9
+ 108 0020 FFF7FEFF 		bl	dma_ring_available
+ 109              	.LVL5:
+  18:Core/Src/dma_scanf.c ****     while(dma_ring_available(&dsi.rx_ring) == 0){
+ 110              		.loc 1 18 44 view .LVU17
+ 111 0024 0028     		cmp	r0, #0
+ 112 0026 EED0     		beq	.L7
+  20:Core/Src/dma_scanf.c ****     }
+  21:Core/Src/dma_scanf.c ****     char c;
+ 113              		.loc 1 21 5 is_stmt 1 view .LVU18
+  22:Core/Src/dma_scanf.c ****     dma_ring_getc(&dsi.rx_ring, &c);
+ 114              		.loc 1 22 5 view .LVU19
+ 115 0028 0DF10701 		add	r1, sp, #7
+ 116 002c 0348     		ldr	r0, .L9
+ 117 002e FFF7FEFF 		bl	dma_ring_getc
+ 118              	.LVL6:
+  23:Core/Src/dma_scanf.c ****     return c;
+ 119              		.loc 1 23 5 view .LVU20
+  24:Core/Src/dma_scanf.c **** }
+ 120              		.loc 1 24 1 is_stmt 0 view .LVU21
+ 121 0032 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 122 0036 03B0     		add	sp, sp, #12
+ 123              	.LCFI3:
+ 124              		.cfi_def_cfa_offset 4
+ 125              		@ sp needed
+ 126 0038 5DF804FB 		ldr	pc, [sp], #4
+ 127              	.L10:
+ 128              		.align	2
+ 129              	.L9:
+ 130 003c 00000000 		.word	dsi
+ 131              		.cfi_endproc
+ 132              	.LFE124:
+ 134              		.global	dsi
+ 135              		.section	.bss.dsi,"aw",%nobits
+ 136              		.align	2
+ 139              	dsi:
+ 140 0000 00000000 		.space	1040
+ 140      00000000 
+ 140      00000000 
+ 140      00000000 
+ 140      00000000 
+ 141              		.text
+ 142              	.Letext0:
+ 143              		.file 2 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 144              		.file 3 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 145              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f303x8.h"
+ 146              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s 			page 4
+
+
+ 147              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
+ 148              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h"
+ 149              		.file 8 "Core/Inc/dma_ring.h"
+ 150              		.file 9 "Core/Inc/dma_scanf.h"
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dma_scanf.c
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:21     .text.dma_scanf_init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:27     .text.dma_scanf_init:00000000 dma_scanf_init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:62     .text.dma_scanf_init:00000020 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:139    .bss.dsi:00000000 dsi
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:67     .text.dma_scanf_getc_blocking:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:73     .text.dma_scanf_getc_blocking:00000000 dma_scanf_getc_blocking
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:130    .text.dma_scanf_getc_blocking:0000003c $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cclgG45l.s:136    .bss.dsi:00000000 $d
+
+UNDEFINED SYMBOLS
+dma_ring_init
+HAL_UART_Receive_DMA
+dma_ring_set_w_ptr
+dma_ring_available
+dma_ring_getc

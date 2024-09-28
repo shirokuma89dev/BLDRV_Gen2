@@ -1,0 +1,705 @@
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"dma_ring.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/dma_ring.c"
+  20              		.section	.text.update_w_ptr,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	update_w_ptr:
+  27              	.LVL0:
+  28              	.LFB126:
+   1:Core/Src/dma_ring.c **** #include "dma_ring.h"
+   2:Core/Src/dma_ring.c **** #include "main.h"
+   3:Core/Src/dma_ring.c **** #include <stdio.h>
+   4:Core/Src/dma_ring.c **** 
+   5:Core/Src/dma_ring.c **** static void update_w_ptr(struct dma_ring_buf *ring){
+  29              		.loc 1 5 52 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+   6:Core/Src/dma_ring.c **** 	ring->w_ptr = (uint16_t)((ring->buf_size - __HAL_DMA_GET_COUNTER(ring->huart->hdmarx))&0xFFFF);
+  34              		.loc 1 6 2 view .LVU1
+  35              		.loc 1 6 32 is_stmt 0 view .LVU2
+  36 0000 B0F80034 		ldrh	r3, [r0, #1024]
+  37              		.loc 1 6 45 view .LVU3
+  38 0004 D0F80824 		ldr	r2, [r0, #1032]
+  39 0008 526F     		ldr	r2, [r2, #116]
+  40 000a 1268     		ldr	r2, [r2]
+  41 000c 5268     		ldr	r2, [r2, #4]
+  42              		.loc 1 6 16 view .LVU4
+  43 000e 9B1A     		subs	r3, r3, r2
+  44              		.loc 1 6 14 view .LVU5
+  45 0010 A0F80234 		strh	r3, [r0, #1026]	@ movhi
+   7:Core/Src/dma_ring.c **** }
+  46              		.loc 1 7 1 view .LVU6
+  47 0014 7047     		bx	lr
+  48              		.cfi_endproc
+  49              	.LFE126:
+  51              		.section	.text.dma_ring_init,"ax",%progbits
+  52              		.align	1
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 2
+
+
+  53              		.global	dma_ring_init
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	dma_ring_init:
+  59              	.LVL1:
+  60              	.LFB127:
+   8:Core/Src/dma_ring.c **** 
+   9:Core/Src/dma_ring.c **** void dma_ring_init(struct dma_ring_buf *ring, UART_HandleTypeDef *huart){
+  61              		.loc 1 9 73 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  10:Core/Src/dma_ring.c ****   ring->buf_size = RING_BUF_SIZE;
+  66              		.loc 1 10 3 view .LVU8
+  67              		.loc 1 10 18 is_stmt 0 view .LVU9
+  68 0000 4FF48063 		mov	r3, #1024
+  69 0004 A0F80034 		strh	r3, [r0, #1024]	@ movhi
+  11:Core/Src/dma_ring.c ****   ring->w_ptr = 0;
+  70              		.loc 1 11 3 is_stmt 1 view .LVU10
+  71              		.loc 1 11 15 is_stmt 0 view .LVU11
+  72 0008 0023     		movs	r3, #0
+  73 000a A0F80234 		strh	r3, [r0, #1026]	@ movhi
+  12:Core/Src/dma_ring.c ****   ring->r_ptr = 0;
+  74              		.loc 1 12 3 is_stmt 1 view .LVU12
+  75              		.loc 1 12 15 is_stmt 0 view .LVU13
+  76 000e A0F80434 		strh	r3, [r0, #1028]	@ movhi
+  13:Core/Src/dma_ring.c ****   ring->overwrite_cnt = 0;
+  77              		.loc 1 13 3 is_stmt 1 view .LVU14
+  78              		.loc 1 13 23 is_stmt 0 view .LVU15
+  79 0012 A0F80634 		strh	r3, [r0, #1030]	@ movhi
+  14:Core/Src/dma_ring.c ****   ring->huart = huart;
+  80              		.loc 1 14 3 is_stmt 1 view .LVU16
+  81              		.loc 1 14 15 is_stmt 0 view .LVU17
+  82 0016 C0F80814 		str	r1, [r0, #1032]
+  15:Core/Src/dma_ring.c **** }
+  83              		.loc 1 15 1 view .LVU18
+  84 001a 7047     		bx	lr
+  85              		.cfi_endproc
+  86              	.LFE127:
+  88              		.section	.text.dma_ring_getc,"ax",%progbits
+  89              		.align	1
+  90              		.global	dma_ring_getc
+  91              		.syntax unified
+  92              		.thumb
+  93              		.thumb_func
+  95              	dma_ring_getc:
+  96              	.LVL2:
+  97              	.LFB128:
+  16:Core/Src/dma_ring.c **** 
+  17:Core/Src/dma_ring.c **** int dma_ring_getc(struct dma_ring_buf *ring, uint8_t *c){
+  98              		.loc 1 17 57 is_stmt 1 view -0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102              		.loc 1 17 57 is_stmt 0 view .LVU20
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 3
+
+
+ 103 0000 38B5     		push	{r3, r4, r5, lr}
+ 104              	.LCFI0:
+ 105              		.cfi_def_cfa_offset 16
+ 106              		.cfi_offset 3, -16
+ 107              		.cfi_offset 4, -12
+ 108              		.cfi_offset 5, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 0446     		mov	r4, r0
+ 111 0004 0D46     		mov	r5, r1
+  18:Core/Src/dma_ring.c **** update_w_ptr(ring);
+ 112              		.loc 1 18 1 is_stmt 1 view .LVU21
+ 113 0006 FFF7FEFF 		bl	update_w_ptr
+ 114              	.LVL3:
+  19:Core/Src/dma_ring.c ****   if(ring->r_ptr == ring->w_ptr) return RING_FAIL;
+ 115              		.loc 1 19 3 view .LVU22
+ 116              		.loc 1 19 10 is_stmt 0 view .LVU23
+ 117 000a B4F80424 		ldrh	r2, [r4, #1028]
+ 118              		.loc 1 19 25 view .LVU24
+ 119 000e B4F80234 		ldrh	r3, [r4, #1026]
+ 120              		.loc 1 19 5 view .LVU25
+ 121 0012 9A42     		cmp	r2, r3
+ 122 0014 0CD0     		beq	.L6
+  20:Core/Src/dma_ring.c ****   uint16_t next_ptr = ring->r_ptr+1;
+ 123              		.loc 1 20 3 is_stmt 1 view .LVU26
+ 124              		.loc 1 20 12 is_stmt 0 view .LVU27
+ 125 0016 531C     		adds	r3, r2, #1
+ 126 0018 9BB2     		uxth	r3, r3
+ 127              	.LVL4:
+  21:Core/Src/dma_ring.c ****   if(next_ptr >= ring->buf_size) next_ptr = 0;
+ 128              		.loc 1 21 3 is_stmt 1 view .LVU28
+ 129              		.loc 1 21 22 is_stmt 0 view .LVU29
+ 130 001a B4F80014 		ldrh	r1, [r4, #1024]
+ 131              		.loc 1 21 5 view .LVU30
+ 132 001e 9942     		cmp	r1, r3
+ 133 0020 00D8     		bhi	.L5
+ 134              		.loc 1 21 43 view .LVU31
+ 135 0022 0023     		movs	r3, #0
+ 136              	.LVL5:
+ 137              	.L5:
+  22:Core/Src/dma_ring.c **** 
+  23:Core/Src/dma_ring.c ****   *c = ring->buf[ring->r_ptr];
+ 138              		.loc 1 23 3 is_stmt 1 view .LVU32
+ 139              		.loc 1 23 17 is_stmt 0 view .LVU33
+ 140 0024 A25C     		ldrb	r2, [r4, r2]	@ zero_extendqisi2
+ 141              		.loc 1 23 6 view .LVU34
+ 142 0026 2A70     		strb	r2, [r5]
+  24:Core/Src/dma_ring.c ****   ring->r_ptr = next_ptr;
+ 143              		.loc 1 24 3 is_stmt 1 view .LVU35
+ 144              		.loc 1 24 15 is_stmt 0 view .LVU36
+ 145 0028 A4F80434 		strh	r3, [r4, #1028]	@ movhi
+  25:Core/Src/dma_ring.c ****   return RING_SUCCESS;
+ 146              		.loc 1 25 3 is_stmt 1 view .LVU37
+ 147              		.loc 1 25 10 is_stmt 0 view .LVU38
+ 148 002c 0020     		movs	r0, #0
+ 149              	.LVL6:
+ 150              	.L3:
+  26:Core/Src/dma_ring.c **** }
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 4
+
+
+ 151              		.loc 1 26 1 view .LVU39
+ 152 002e 38BD     		pop	{r3, r4, r5, pc}
+ 153              	.LVL7:
+ 154              	.L6:
+  19:Core/Src/dma_ring.c ****   uint16_t next_ptr = ring->r_ptr+1;
+ 155              		.loc 1 19 41 view .LVU40
+ 156 0030 0120     		movs	r0, #1
+ 157 0032 FCE7     		b	.L3
+ 158              		.cfi_endproc
+ 159              	.LFE128:
+ 161              		.section	.text.dma_ring_putc,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	dma_ring_putc
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	dma_ring_putc:
+ 169              	.LVL8:
+ 170              	.LFB129:
+  27:Core/Src/dma_ring.c **** 
+  28:Core/Src/dma_ring.c **** int dma_ring_putc(struct dma_ring_buf *ring, uint8_t c){
+ 171              		.loc 1 28 56 is_stmt 1 view -0
+ 172              		.cfi_startproc
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175              		@ link register save eliminated.
+  29:Core/Src/dma_ring.c ****   uint16_t next_ptr = ring->w_ptr+1;
+ 176              		.loc 1 29 3 view .LVU42
+ 177              		.loc 1 29 27 is_stmt 0 view .LVU43
+ 178 0000 B0F80224 		ldrh	r2, [r0, #1026]
+ 179              		.loc 1 29 12 view .LVU44
+ 180 0004 531C     		adds	r3, r2, #1
+ 181 0006 9BB2     		uxth	r3, r3
+ 182              	.LVL9:
+  30:Core/Src/dma_ring.c ****   if(next_ptr >= ring->buf_size) next_ptr = 0;
+ 183              		.loc 1 30 3 is_stmt 1 view .LVU45
+ 184              		.loc 1 30 22 is_stmt 0 view .LVU46
+ 185 0008 B0F800C4 		ldrh	ip, [r0, #1024]
+ 186              		.loc 1 30 5 view .LVU47
+ 187 000c 9C45     		cmp	ip, r3
+ 188 000e 00D8     		bhi	.L10
+ 189              		.loc 1 30 43 view .LVU48
+ 190 0010 0023     		movs	r3, #0
+ 191              	.LVL10:
+ 192              	.L10:
+  31:Core/Src/dma_ring.c **** 
+  32:Core/Src/dma_ring.c ****   if(next_ptr == ring->r_ptr){
+ 193              		.loc 1 32 3 is_stmt 1 view .LVU49
+ 194              		.loc 1 32 22 is_stmt 0 view .LVU50
+ 195 0012 B0F804C4 		ldrh	ip, [r0, #1028]
+ 196              		.loc 1 32 5 view .LVU51
+ 197 0016 9C45     		cmp	ip, r3
+ 198 0018 04D0     		beq	.L14
+  33:Core/Src/dma_ring.c ****     ring->overwrite_cnt++;
+  34:Core/Src/dma_ring.c ****     return RING_FAIL;
+  35:Core/Src/dma_ring.c ****   }
+  36:Core/Src/dma_ring.c ****   ring->buf[ring->w_ptr] = c;
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 5
+
+
+ 199              		.loc 1 36 3 is_stmt 1 view .LVU52
+ 200              		.loc 1 36 26 is_stmt 0 view .LVU53
+ 201 001a 8154     		strb	r1, [r0, r2]
+  37:Core/Src/dma_ring.c ****   ring->w_ptr = next_ptr;
+ 202              		.loc 1 37 3 is_stmt 1 view .LVU54
+ 203              		.loc 1 37 15 is_stmt 0 view .LVU55
+ 204 001c A0F80234 		strh	r3, [r0, #1026]	@ movhi
+  38:Core/Src/dma_ring.c ****   return RING_SUCCESS;
+ 205              		.loc 1 38 3 is_stmt 1 view .LVU56
+ 206              		.loc 1 38 10 is_stmt 0 view .LVU57
+ 207 0020 0020     		movs	r0, #0
+ 208              	.LVL11:
+  39:Core/Src/dma_ring.c **** }
+ 209              		.loc 1 39 1 view .LVU58
+ 210 0022 7047     		bx	lr
+ 211              	.LVL12:
+ 212              	.L14:
+  33:Core/Src/dma_ring.c ****     return RING_FAIL;
+ 213              		.loc 1 33 5 is_stmt 1 view .LVU59
+  33:Core/Src/dma_ring.c ****     return RING_FAIL;
+ 214              		.loc 1 33 9 is_stmt 0 view .LVU60
+ 215 0024 B0F80634 		ldrh	r3, [r0, #1030]
+ 216              	.LVL13:
+  33:Core/Src/dma_ring.c ****     return RING_FAIL;
+ 217              		.loc 1 33 24 view .LVU61
+ 218 0028 0133     		adds	r3, r3, #1
+ 219 002a A0F80634 		strh	r3, [r0, #1030]	@ movhi
+  34:Core/Src/dma_ring.c ****   }
+ 220              		.loc 1 34 5 is_stmt 1 view .LVU62
+  34:Core/Src/dma_ring.c ****   }
+ 221              		.loc 1 34 12 is_stmt 0 view .LVU63
+ 222 002e 0120     		movs	r0, #1
+ 223              	.LVL14:
+  34:Core/Src/dma_ring.c ****   }
+ 224              		.loc 1 34 12 view .LVU64
+ 225 0030 7047     		bx	lr
+ 226              		.cfi_endproc
+ 227              	.LFE129:
+ 229              		.section	.text.dma_ring_available,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	dma_ring_available
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	dma_ring_available:
+ 237              	.LVL15:
+ 238              	.LFB130:
+  40:Core/Src/dma_ring.c **** 
+  41:Core/Src/dma_ring.c **** int dma_ring_available(struct dma_ring_buf *ring){
+ 239              		.loc 1 41 50 is_stmt 1 view -0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              		.loc 1 41 50 is_stmt 0 view .LVU66
+ 244 0000 10B5     		push	{r4, lr}
+ 245              	.LCFI1:
+ 246              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 6
+
+
+ 247              		.cfi_offset 4, -8
+ 248              		.cfi_offset 14, -4
+ 249 0002 0446     		mov	r4, r0
+  42:Core/Src/dma_ring.c ****   update_w_ptr(ring);
+ 250              		.loc 1 42 3 is_stmt 1 view .LVU67
+ 251 0004 FFF7FEFF 		bl	update_w_ptr
+ 252              	.LVL16:
+  43:Core/Src/dma_ring.c ****   if(ring->w_ptr >= ring->r_ptr){
+ 253              		.loc 1 43 3 view .LVU68
+ 254              		.loc 1 43 10 is_stmt 0 view .LVU69
+ 255 0008 B4F80234 		ldrh	r3, [r4, #1026]
+ 256              		.loc 1 43 25 view .LVU70
+ 257 000c B4F80404 		ldrh	r0, [r4, #1028]
+ 258              		.loc 1 43 5 view .LVU71
+ 259 0010 8342     		cmp	r3, r0
+ 260 0012 01D3     		bcc	.L16
+  44:Core/Src/dma_ring.c ****     return ring->w_ptr - ring->r_ptr;
+ 261              		.loc 1 44 5 is_stmt 1 view .LVU72
+ 262              		.loc 1 44 24 is_stmt 0 view .LVU73
+ 263 0014 181A     		subs	r0, r3, r0
+ 264              	.L15:
+  45:Core/Src/dma_ring.c ****   }else{
+  46:Core/Src/dma_ring.c ****     return ring->buf_size + ring->w_ptr - ring->r_ptr;
+  47:Core/Src/dma_ring.c ****   }
+  48:Core/Src/dma_ring.c **** }
+ 265              		.loc 1 48 1 view .LVU74
+ 266 0016 10BD     		pop	{r4, pc}
+ 267              	.LVL17:
+ 268              	.L16:
+  46:Core/Src/dma_ring.c ****   }
+ 269              		.loc 1 46 5 is_stmt 1 view .LVU75
+  46:Core/Src/dma_ring.c ****   }
+ 270              		.loc 1 46 16 is_stmt 0 view .LVU76
+ 271 0018 B4F80024 		ldrh	r2, [r4, #1024]
+  46:Core/Src/dma_ring.c ****   }
+ 272              		.loc 1 46 27 view .LVU77
+ 273 001c 1344     		add	r3, r3, r2
+  46:Core/Src/dma_ring.c ****   }
+ 274              		.loc 1 46 41 view .LVU78
+ 275 001e 181A     		subs	r0, r3, r0
+ 276 0020 F9E7     		b	.L15
+ 277              		.cfi_endproc
+ 278              	.LFE130:
+ 280              		.section	.text.dma_ring_available_linear,"ax",%progbits
+ 281              		.align	1
+ 282              		.global	dma_ring_available_linear
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	dma_ring_available_linear:
+ 288              	.LVL18:
+ 289              	.LFB131:
+  49:Core/Src/dma_ring.c **** int dma_ring_available_linear(struct dma_ring_buf *ring){
+ 290              		.loc 1 49 57 is_stmt 1 view -0
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 0
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 7
+
+
+ 294              		@ link register save eliminated.
+  50:Core/Src/dma_ring.c ****   if(ring->w_ptr >= ring->r_ptr){
+ 295              		.loc 1 50 3 view .LVU80
+ 296              		.loc 1 50 10 is_stmt 0 view .LVU81
+ 297 0000 B0F80224 		ldrh	r2, [r0, #1026]
+ 298              		.loc 1 50 25 view .LVU82
+ 299 0004 B0F80434 		ldrh	r3, [r0, #1028]
+ 300              		.loc 1 50 5 view .LVU83
+ 301 0008 9A42     		cmp	r2, r3
+ 302 000a 01D3     		bcc	.L20
+  51:Core/Src/dma_ring.c ****     return ring->w_ptr - ring->r_ptr;
+ 303              		.loc 1 51 5 is_stmt 1 view .LVU84
+ 304              		.loc 1 51 24 is_stmt 0 view .LVU85
+ 305 000c D01A     		subs	r0, r2, r3
+ 306              	.LVL19:
+ 307              		.loc 1 51 24 view .LVU86
+ 308 000e 7047     		bx	lr
+ 309              	.LVL20:
+ 310              	.L20:
+  52:Core/Src/dma_ring.c ****   }else{
+  53:Core/Src/dma_ring.c ****     return ring->buf_size - ring->r_ptr;
+ 311              		.loc 1 53 5 is_stmt 1 view .LVU87
+ 312              		.loc 1 53 16 is_stmt 0 view .LVU88
+ 313 0010 B0F80024 		ldrh	r2, [r0, #1024]
+ 314              		.loc 1 53 27 view .LVU89
+ 315 0014 D01A     		subs	r0, r2, r3
+ 316              	.LVL21:
+  54:Core/Src/dma_ring.c ****   }
+  55:Core/Src/dma_ring.c **** }
+ 317              		.loc 1 55 1 view .LVU90
+ 318 0016 7047     		bx	lr
+ 319              		.cfi_endproc
+ 320              	.LFE131:
+ 322              		.section	.text.dma_ring_get_w_ptr,"ax",%progbits
+ 323              		.align	1
+ 324              		.global	dma_ring_get_w_ptr
+ 325              		.syntax unified
+ 326              		.thumb
+ 327              		.thumb_func
+ 329              	dma_ring_get_w_ptr:
+ 330              	.LVL22:
+ 331              	.LFB132:
+  56:Core/Src/dma_ring.c **** 
+  57:Core/Src/dma_ring.c **** uint16_t dma_ring_get_w_ptr(struct dma_ring_buf *ring){
+ 332              		.loc 1 57 55 is_stmt 1 view -0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 0
+ 335              		@ frame_needed = 0, uses_anonymous_args = 0
+ 336              		@ link register save eliminated.
+  58:Core/Src/dma_ring.c ****   return ring->w_ptr;
+ 337              		.loc 1 58 3 view .LVU92
+  59:Core/Src/dma_ring.c **** }
+ 338              		.loc 1 59 1 is_stmt 0 view .LVU93
+ 339 0000 B0F80204 		ldrh	r0, [r0, #1026]
+ 340              	.LVL23:
+ 341              		.loc 1 59 1 view .LVU94
+ 342 0004 7047     		bx	lr
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 8
+
+
+ 343              		.cfi_endproc
+ 344              	.LFE132:
+ 346              		.section	.text.dma_ring_get_r_ptr,"ax",%progbits
+ 347              		.align	1
+ 348              		.global	dma_ring_get_r_ptr
+ 349              		.syntax unified
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	dma_ring_get_r_ptr:
+ 354              	.LVL24:
+ 355              	.LFB133:
+  60:Core/Src/dma_ring.c **** 
+  61:Core/Src/dma_ring.c **** uint16_t dma_ring_get_r_ptr(struct dma_ring_buf *ring){
+ 356              		.loc 1 61 55 is_stmt 1 view -0
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 0
+ 359              		@ frame_needed = 0, uses_anonymous_args = 0
+ 360              		@ link register save eliminated.
+  62:Core/Src/dma_ring.c ****   return ring->r_ptr;
+ 361              		.loc 1 62 3 view .LVU96
+  63:Core/Src/dma_ring.c **** }
+ 362              		.loc 1 63 1 is_stmt 0 view .LVU97
+ 363 0000 B0F80404 		ldrh	r0, [r0, #1028]
+ 364              	.LVL25:
+ 365              		.loc 1 63 1 view .LVU98
+ 366 0004 7047     		bx	lr
+ 367              		.cfi_endproc
+ 368              	.LFE133:
+ 370              		.section	.text.dma_ring_forward_r_ptr,"ax",%progbits
+ 371              		.align	1
+ 372              		.global	dma_ring_forward_r_ptr
+ 373              		.syntax unified
+ 374              		.thumb
+ 375              		.thumb_func
+ 377              	dma_ring_forward_r_ptr:
+ 378              	.LVL26:
+ 379              	.LFB134:
+  64:Core/Src/dma_ring.c **** 
+  65:Core/Src/dma_ring.c **** void dma_ring_forward_r_ptr(struct dma_ring_buf *ring, int len){
+ 380              		.loc 1 65 64 is_stmt 1 view -0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 0
+ 383              		@ frame_needed = 0, uses_anonymous_args = 0
+ 384              		@ link register save eliminated.
+  66:Core/Src/dma_ring.c ****   while(len > 0){
+ 385              		.loc 1 66 3 view .LVU100
+ 386              		.loc 1 66 8 is_stmt 0 view .LVU101
+ 387 0000 03E0     		b	.L25
+ 388              	.L26:
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+  68:Core/Src/dma_ring.c ****       ring->r_ptr = 0;
+  69:Core/Src/dma_ring.c ****     }else{
+  70:Core/Src/dma_ring.c ****       ring->r_ptr += 1;
+ 389              		.loc 1 70 7 is_stmt 1 view .LVU102
+ 390              		.loc 1 70 19 is_stmt 0 view .LVU103
+ 391 0002 0133     		adds	r3, r3, #1
+ 392 0004 A0F80434 		strh	r3, [r0, #1028]	@ movhi
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 9
+
+
+ 393              	.L27:
+  71:Core/Src/dma_ring.c ****     }
+  72:Core/Src/dma_ring.c ****     len--;
+ 394              		.loc 1 72 5 is_stmt 1 view .LVU104
+ 395              		.loc 1 72 8 is_stmt 0 view .LVU105
+ 396 0008 0139     		subs	r1, r1, #1
+ 397              	.LVL27:
+ 398              	.L25:
+  66:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 399              		.loc 1 66 13 is_stmt 1 view .LVU106
+ 400 000a 0029     		cmp	r1, #0
+ 401 000c 0BDD     		ble	.L29
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 402              		.loc 1 67 5 view .LVU107
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 403              		.loc 1 67 12 is_stmt 0 view .LVU108
+ 404 000e B0F80434 		ldrh	r3, [r0, #1028]
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 405              		.loc 1 67 19 view .LVU109
+ 406 0012 03F1010C 		add	ip, r3, #1
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 407              		.loc 1 67 29 view .LVU110
+ 408 0016 B0F80024 		ldrh	r2, [r0, #1024]
+  67:Core/Src/dma_ring.c ****     if(ring->r_ptr+1 >= ring->buf_size){
+ 409              		.loc 1 67 7 view .LVU111
+ 410 001a 9445     		cmp	ip, r2
+ 411 001c F1DB     		blt	.L26
+  68:Core/Src/dma_ring.c ****     }else{
+ 412              		.loc 1 68 7 is_stmt 1 view .LVU112
+  68:Core/Src/dma_ring.c ****     }else{
+ 413              		.loc 1 68 19 is_stmt 0 view .LVU113
+ 414 001e 0023     		movs	r3, #0
+ 415 0020 A0F80434 		strh	r3, [r0, #1028]	@ movhi
+ 416 0024 F0E7     		b	.L27
+ 417              	.L29:
+  73:Core/Src/dma_ring.c ****   }
+  74:Core/Src/dma_ring.c **** }
+ 418              		.loc 1 74 1 view .LVU114
+ 419 0026 7047     		bx	lr
+ 420              		.cfi_endproc
+ 421              	.LFE134:
+ 423              		.section	.text.dma_ring_set_w_ptr,"ax",%progbits
+ 424              		.align	1
+ 425              		.global	dma_ring_set_w_ptr
+ 426              		.syntax unified
+ 427              		.thumb
+ 428              		.thumb_func
+ 430              	dma_ring_set_w_ptr:
+ 431              	.LVL28:
+ 432              	.LFB135:
+  75:Core/Src/dma_ring.c **** 
+  76:Core/Src/dma_ring.c **** void dma_ring_set_w_ptr(struct dma_ring_buf *ring, uint16_t w_ptr){
+ 433              		.loc 1 76 67 is_stmt 1 view -0
+ 434              		.cfi_startproc
+ 435              		@ args = 0, pretend = 0, frame = 0
+ 436              		@ frame_needed = 0, uses_anonymous_args = 0
+ 437              		@ link register save eliminated.
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 10
+
+
+  77:Core/Src/dma_ring.c ****     ring->w_ptr = w_ptr;
+ 438              		.loc 1 77 5 view .LVU116
+ 439              		.loc 1 77 17 is_stmt 0 view .LVU117
+ 440 0000 A0F80214 		strh	r1, [r0, #1026]	@ movhi
+  78:Core/Src/dma_ring.c **** }
+ 441              		.loc 1 78 1 view .LVU118
+ 442 0004 7047     		bx	lr
+ 443              		.cfi_endproc
+ 444              	.LFE135:
+ 446              		.section	.rodata.dma_ring_debug.str1.4,"aMS",%progbits,1
+ 447              		.align	2
+ 448              	.LC0:
+ 449 0000 0A3D3D3D 		.ascii	"\012====Ring Debug information====\000"
+ 449      3D52696E 
+ 449      67204465 
+ 449      62756720 
+ 449      696E666F 
+ 450              		.align	2
+ 451              	.LC1:
+ 452 0020 42756666 		.ascii	"Buffer Size: %d\012\000"
+ 452      65722053 
+ 452      697A653A 
+ 452      2025640A 
+ 452      00
+ 453 0031 000000   		.align	2
+ 454              	.LC2:
+ 455 0034 57726974 		.ascii	"Write Pointer: %d\012\000"
+ 455      6520506F 
+ 455      696E7465 
+ 455      723A2025 
+ 455      640A00
+ 456 0047 00       		.align	2
+ 457              	.LC3:
+ 458 0048 52656164 		.ascii	"Read Pointer: %d\012\000"
+ 458      20506F69 
+ 458      6E746572 
+ 458      3A202564 
+ 458      0A00
+ 459 005a 0000     		.align	2
+ 460              	.LC4:
+ 461 005c 4F766572 		.ascii	"OverWrite Count: %d\012\012\000"
+ 461      57726974 
+ 461      6520436F 
+ 461      756E743A 
+ 461      2025640A 
+ 462              		.section	.text.dma_ring_debug,"ax",%progbits
+ 463              		.align	1
+ 464              		.global	dma_ring_debug
+ 465              		.syntax unified
+ 466              		.thumb
+ 467              		.thumb_func
+ 469              	dma_ring_debug:
+ 470              	.LVL29:
+ 471              	.LFB136:
+  79:Core/Src/dma_ring.c **** void dma_ring_debug(struct dma_ring_buf *ring){
+ 472              		.loc 1 79 47 is_stmt 1 view -0
+ 473              		.cfi_startproc
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 11
+
+
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 476              		.loc 1 79 47 is_stmt 0 view .LVU120
+ 477 0000 10B5     		push	{r4, lr}
+ 478              	.LCFI2:
+ 479              		.cfi_def_cfa_offset 8
+ 480              		.cfi_offset 4, -8
+ 481              		.cfi_offset 14, -4
+ 482 0002 0446     		mov	r4, r0
+  80:Core/Src/dma_ring.c ****   printf("\n====Ring Debug information====\n");
+ 483              		.loc 1 80 3 is_stmt 1 view .LVU121
+ 484 0004 0B48     		ldr	r0, .L33
+ 485              	.LVL30:
+ 486              		.loc 1 80 3 is_stmt 0 view .LVU122
+ 487 0006 FFF7FEFF 		bl	puts
+ 488              	.LVL31:
+  81:Core/Src/dma_ring.c ****     printf("Buffer Size: %d\n", ring->buf_size);
+ 489              		.loc 1 81 5 is_stmt 1 view .LVU123
+ 490 000a B4F80014 		ldrh	r1, [r4, #1024]
+ 491 000e 0A48     		ldr	r0, .L33+4
+ 492 0010 FFF7FEFF 		bl	printf
+ 493              	.LVL32:
+  82:Core/Src/dma_ring.c ****     printf("Write Pointer: %d\n", ring->w_ptr);
+ 494              		.loc 1 82 5 view .LVU124
+ 495 0014 B4F80214 		ldrh	r1, [r4, #1026]
+ 496 0018 0848     		ldr	r0, .L33+8
+ 497 001a FFF7FEFF 		bl	printf
+ 498              	.LVL33:
+  83:Core/Src/dma_ring.c ****     printf("Read Pointer: %d\n", ring->r_ptr);
+ 499              		.loc 1 83 5 view .LVU125
+ 500 001e B4F80414 		ldrh	r1, [r4, #1028]
+ 501 0022 0748     		ldr	r0, .L33+12
+ 502 0024 FFF7FEFF 		bl	printf
+ 503              	.LVL34:
+  84:Core/Src/dma_ring.c ****     printf("OverWrite Count: %d\n\n", ring->overwrite_cnt);
+ 504              		.loc 1 84 5 view .LVU126
+ 505 0028 B4F80614 		ldrh	r1, [r4, #1030]
+ 506 002c 0548     		ldr	r0, .L33+16
+ 507 002e FFF7FEFF 		bl	printf
+ 508              	.LVL35:
+  85:Core/Src/dma_ring.c **** }
+ 509              		.loc 1 85 1 is_stmt 0 view .LVU127
+ 510 0032 10BD     		pop	{r4, pc}
+ 511              	.LVL36:
+ 512              	.L34:
+ 513              		.loc 1 85 1 view .LVU128
+ 514              		.align	2
+ 515              	.L33:
+ 516 0034 00000000 		.word	.LC0
+ 517 0038 20000000 		.word	.LC1
+ 518 003c 34000000 		.word	.LC2
+ 519 0040 48000000 		.word	.LC3
+ 520 0044 5C000000 		.word	.LC4
+ 521              		.cfi_endproc
+ 522              	.LFE136:
+ 524              		.text
+ 525              	.Letext0:
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 12
+
+
+ 526              		.file 2 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 527              		.file 3 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 528              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f303x8.h"
+ 529              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
+ 530              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
+ 531              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h"
+ 532              		.file 8 "Core/Inc/dma_ring.h"
+ 533              		.file 9 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
+ 534              		.file 10 "<built-in>"
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dma_ring.c
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:21     .text.update_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:26     .text.update_w_ptr:00000000 update_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:52     .text.dma_ring_init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:58     .text.dma_ring_init:00000000 dma_ring_init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:89     .text.dma_ring_getc:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:95     .text.dma_ring_getc:00000000 dma_ring_getc
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:162    .text.dma_ring_putc:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:168    .text.dma_ring_putc:00000000 dma_ring_putc
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:230    .text.dma_ring_available:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:236    .text.dma_ring_available:00000000 dma_ring_available
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:281    .text.dma_ring_available_linear:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:287    .text.dma_ring_available_linear:00000000 dma_ring_available_linear
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:323    .text.dma_ring_get_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:329    .text.dma_ring_get_w_ptr:00000000 dma_ring_get_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:347    .text.dma_ring_get_r_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:353    .text.dma_ring_get_r_ptr:00000000 dma_ring_get_r_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:371    .text.dma_ring_forward_r_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:377    .text.dma_ring_forward_r_ptr:00000000 dma_ring_forward_r_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:424    .text.dma_ring_set_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:430    .text.dma_ring_set_w_ptr:00000000 dma_ring_set_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:447    .rodata.dma_ring_debug.str1.4:00000000 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:463    .text.dma_ring_debug:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:469    .text.dma_ring_debug:00000000 dma_ring_debug
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cckGyNhp.s:516    .text.dma_ring_debug:00000034 $d
+
+UNDEFINED SYMBOLS
+puts
+printf

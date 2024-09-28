@@ -1,0 +1,408 @@
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"dma_printf.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/dma_printf.c"
+  20              		.section	.text.dma_printf_init,"ax",%progbits
+  21              		.align	1
+  22              		.global	dma_printf_init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	dma_printf_init:
+  28              	.LVL0:
+  29              	.LFB123:
+   1:Core/Src/dma_printf.c **** //
+   2:Core/Src/dma_printf.c **** // Created by naoki on 19/03/09.
+   3:Core/Src/dma_printf.c **** //
+   4:Core/Src/dma_printf.c **** 
+   5:Core/Src/dma_printf.c **** #include "main.h"
+   6:Core/Src/dma_printf.c **** #include "dma_printf.h"
+   7:Core/Src/dma_printf.c **** #include "dma_ring.h"
+   8:Core/Src/dma_printf.c **** #include <stdbool.h>
+   9:Core/Src/dma_printf.c **** 
+  10:Core/Src/dma_printf.c **** struct dma_printf_info dmi;
+  11:Core/Src/dma_printf.c **** 
+  12:Core/Src/dma_printf.c **** void dma_printf_init(UART_HandleTypeDef *printf_huart){
+  30              		.loc 1 12 55 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 12 55 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0146     		mov	r1, r0
+  13:Core/Src/dma_printf.c ****     dmi.huart = printf_huart;
+  41              		.loc 1 13 5 is_stmt 1 view .LVU2
+  42              		.loc 1 13 15 is_stmt 0 view .LVU3
+  43 0004 054C     		ldr	r4, .L3
+  44 0006 C4F81004 		str	r0, [r4, #1040]
+  14:Core/Src/dma_printf.c ****     dma_ring_init(&dmi.tx_ring, printf_huart);
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 2
+
+
+  45              		.loc 1 14 5 is_stmt 1 view .LVU4
+  46 000a 2046     		mov	r0, r4
+  47              	.LVL1:
+  48              		.loc 1 14 5 is_stmt 0 view .LVU5
+  49 000c FFF7FEFF 		bl	dma_ring_init
+  50              	.LVL2:
+  15:Core/Src/dma_printf.c ****     dmi.sending = false;
+  51              		.loc 1 15 5 is_stmt 1 view .LVU6
+  52              		.loc 1 15 17 is_stmt 0 view .LVU7
+  53 0010 0023     		movs	r3, #0
+  54 0012 C4F80C34 		str	r3, [r4, #1036]
+  16:Core/Src/dma_printf.c ****     dmi.previous_send_len = 0;
+  55              		.loc 1 16 5 is_stmt 1 view .LVU8
+  56              		.loc 1 16 27 is_stmt 0 view .LVU9
+  57 0016 C4F81434 		str	r3, [r4, #1044]
+  17:Core/Src/dma_printf.c **** }
+  58              		.loc 1 17 1 view .LVU10
+  59 001a 10BD     		pop	{r4, pc}
+  60              	.L4:
+  61              		.align	2
+  62              	.L3:
+  63 001c 00000000 		.word	dmi
+  64              		.cfi_endproc
+  65              	.LFE123:
+  67              		.section	.text.dma_printf_putc,"ax",%progbits
+  68              		.align	1
+  69              		.global	dma_printf_putc
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	dma_printf_putc:
+  75              	.LVL3:
+  76              	.LFB125:
+  18:Core/Src/dma_printf.c **** 
+  19:Core/Src/dma_printf.c **** void dma_printf_puts(const char *s){
+  20:Core/Src/dma_printf.c ****     while(*s){
+  21:Core/Src/dma_printf.c ****         dma_printf_putc(*s++);
+  22:Core/Src/dma_printf.c ****     }
+  23:Core/Src/dma_printf.c **** }
+  24:Core/Src/dma_printf.c **** 
+  25:Core/Src/dma_printf.c **** void dma_printf_putc(uint8_t c){
+  77              		.loc 1 25 32 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		.loc 1 25 32 is_stmt 0 view .LVU12
+  82 0000 70B5     		push	{r4, r5, r6, lr}
+  83              	.LCFI1:
+  84              		.cfi_def_cfa_offset 16
+  85              		.cfi_offset 4, -16
+  86              		.cfi_offset 5, -12
+  87              		.cfi_offset 6, -8
+  88              		.cfi_offset 14, -4
+  89 0002 0146     		mov	r1, r0
+  26:Core/Src/dma_printf.c ****     dma_ring_putc(&dmi.tx_ring, c);
+  90              		.loc 1 26 5 is_stmt 1 view .LVU13
+  91 0004 0D4C     		ldr	r4, .L9
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 3
+
+
+  92 0006 2046     		mov	r0, r4
+  93              	.LVL4:
+  94              		.loc 1 26 5 is_stmt 0 view .LVU14
+  95 0008 FFF7FEFF 		bl	dma_ring_putc
+  96              	.LVL5:
+  27:Core/Src/dma_printf.c ****     if(!dmi.sending){
+  97              		.loc 1 27 5 is_stmt 1 view .LVU15
+  98              		.loc 1 27 12 is_stmt 0 view .LVU16
+  99 000c D4F80C34 		ldr	r3, [r4, #1036]
+ 100              		.loc 1 27 7 view .LVU17
+ 101 0010 03B1     		cbz	r3, .L8
+ 102              	.L5:
+  28:Core/Src/dma_printf.c ****         uint16_t len = (uint16_t)dma_ring_available_linear(&dmi.tx_ring);
+  29:Core/Src/dma_printf.c ****         dmi.previous_send_len = len;
+  30:Core/Src/dma_printf.c ****         dmi.sending = true;
+  31:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+  32:Core/Src/dma_printf.c ****     }
+  33:Core/Src/dma_printf.c **** }
+ 103              		.loc 1 33 1 view .LVU18
+ 104 0012 70BD     		pop	{r4, r5, r6, pc}
+ 105              	.L8:
+ 106              	.LBB2:
+  28:Core/Src/dma_printf.c ****         uint16_t len = (uint16_t)dma_ring_available_linear(&dmi.tx_ring);
+ 107              		.loc 1 28 9 is_stmt 1 view .LVU19
+  28:Core/Src/dma_printf.c ****         uint16_t len = (uint16_t)dma_ring_available_linear(&dmi.tx_ring);
+ 108              		.loc 1 28 34 is_stmt 0 view .LVU20
+ 109 0014 2046     		mov	r0, r4
+ 110 0016 FFF7FEFF 		bl	dma_ring_available_linear
+ 111              	.LVL6:
+  28:Core/Src/dma_printf.c ****         uint16_t len = (uint16_t)dma_ring_available_linear(&dmi.tx_ring);
+ 112              		.loc 1 28 18 view .LVU21
+ 113 001a 85B2     		uxth	r5, r0
+ 114              	.LVL7:
+  29:Core/Src/dma_printf.c ****         dmi.sending = true;
+ 115              		.loc 1 29 9 is_stmt 1 view .LVU22
+  29:Core/Src/dma_printf.c ****         dmi.sending = true;
+ 116              		.loc 1 29 31 is_stmt 0 view .LVU23
+ 117 001c C4F81454 		str	r5, [r4, #1044]
+  30:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+ 118              		.loc 1 30 9 is_stmt 1 view .LVU24
+  30:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+ 119              		.loc 1 30 21 is_stmt 0 view .LVU25
+ 120 0020 0123     		movs	r3, #1
+ 121 0022 C4F80C34 		str	r3, [r4, #1036]
+  31:Core/Src/dma_printf.c ****     }
+ 122              		.loc 1 31 9 is_stmt 1 view .LVU26
+ 123 0026 D4F81064 		ldr	r6, [r4, #1040]
+  31:Core/Src/dma_printf.c ****     }
+ 124              		.loc 1 31 58 is_stmt 0 view .LVU27
+ 125 002a 2046     		mov	r0, r4
+ 126 002c FFF7FEFF 		bl	dma_ring_get_r_ptr
+ 127              	.LVL8:
+  31:Core/Src/dma_printf.c ****     }
+ 128              		.loc 1 31 9 view .LVU28
+ 129 0030 2A46     		mov	r2, r5
+ 130 0032 2118     		adds	r1, r4, r0
+ 131 0034 3046     		mov	r0, r6
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 4
+
+
+ 132 0036 FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 133              	.LVL9:
+ 134              	.LBE2:
+ 135              		.loc 1 33 1 view .LVU29
+ 136 003a EAE7     		b	.L5
+ 137              	.L10:
+ 138              		.align	2
+ 139              	.L9:
+ 140 003c 00000000 		.word	dmi
+ 141              		.cfi_endproc
+ 142              	.LFE125:
+ 144              		.section	.text.dma_printf_puts,"ax",%progbits
+ 145              		.align	1
+ 146              		.global	dma_printf_puts
+ 147              		.syntax unified
+ 148              		.thumb
+ 149              		.thumb_func
+ 151              	dma_printf_puts:
+ 152              	.LVL10:
+ 153              	.LFB124:
+  19:Core/Src/dma_printf.c ****     while(*s){
+ 154              		.loc 1 19 36 is_stmt 1 view -0
+ 155              		.cfi_startproc
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+  19:Core/Src/dma_printf.c ****     while(*s){
+ 158              		.loc 1 19 36 is_stmt 0 view .LVU31
+ 159 0000 10B5     		push	{r4, lr}
+ 160              	.LCFI2:
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 4, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 0446     		mov	r4, r0
+  20:Core/Src/dma_printf.c ****         dma_printf_putc(*s++);
+ 165              		.loc 1 20 5 is_stmt 1 view .LVU32
+  20:Core/Src/dma_printf.c ****         dma_printf_putc(*s++);
+ 166              		.loc 1 20 10 is_stmt 0 view .LVU33
+ 167 0004 02E0     		b	.L12
+ 168              	.LVL11:
+ 169              	.L13:
+  21:Core/Src/dma_printf.c ****     }
+ 170              		.loc 1 21 9 is_stmt 1 view .LVU34
+  21:Core/Src/dma_printf.c ****     }
+ 171              		.loc 1 21 27 is_stmt 0 view .LVU35
+ 172 0006 0134     		adds	r4, r4, #1
+ 173              	.LVL12:
+  21:Core/Src/dma_printf.c ****     }
+ 174              		.loc 1 21 9 view .LVU36
+ 175 0008 FFF7FEFF 		bl	dma_printf_putc
+ 176              	.LVL13:
+ 177              	.L12:
+  20:Core/Src/dma_printf.c ****         dma_printf_putc(*s++);
+ 178              		.loc 1 20 11 is_stmt 1 view .LVU37
+ 179 000c 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 180 000e 0028     		cmp	r0, #0
+ 181 0010 F9D1     		bne	.L13
+  23:Core/Src/dma_printf.c **** 
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 5
+
+
+ 182              		.loc 1 23 1 is_stmt 0 view .LVU38
+ 183 0012 10BD     		pop	{r4, pc}
+  23:Core/Src/dma_printf.c **** 
+ 184              		.loc 1 23 1 view .LVU39
+ 185              		.cfi_endproc
+ 186              	.LFE124:
+ 188              		.section	.text.dma_printf_send_it,"ax",%progbits
+ 189              		.align	1
+ 190              		.global	dma_printf_send_it
+ 191              		.syntax unified
+ 192              		.thumb
+ 193              		.thumb_func
+ 195              	dma_printf_send_it:
+ 196              	.LVL14:
+ 197              	.LFB126:
+  34:Core/Src/dma_printf.c **** 
+  35:Core/Src/dma_printf.c **** void dma_printf_send_it(UART_HandleTypeDef *printf_huart) {
+ 198              		.loc 1 35 59 is_stmt 1 view -0
+ 199              		.cfi_startproc
+ 200              		@ args = 0, pretend = 0, frame = 0
+ 201              		@ frame_needed = 0, uses_anonymous_args = 0
+  36:Core/Src/dma_printf.c ****     if(dmi.huart != printf_huart) return;
+ 202              		.loc 1 36 5 view .LVU41
+ 203              		.loc 1 36 11 is_stmt 0 view .LVU42
+ 204 0000 134B     		ldr	r3, .L24
+ 205 0002 D3F81034 		ldr	r3, [r3, #1040]
+ 206              		.loc 1 36 7 view .LVU43
+ 207 0006 8342     		cmp	r3, r0
+ 208 0008 00D0     		beq	.L22
+ 209 000a 7047     		bx	lr
+ 210              	.L22:
+  35:Core/Src/dma_printf.c ****     if(dmi.huart != printf_huart) return;
+ 211              		.loc 1 35 59 view .LVU44
+ 212 000c 70B5     		push	{r4, r5, r6, lr}
+ 213              	.LCFI3:
+ 214              		.cfi_def_cfa_offset 16
+ 215              		.cfi_offset 4, -16
+ 216              		.cfi_offset 5, -12
+ 217              		.cfi_offset 6, -8
+ 218              		.cfi_offset 14, -4
+  37:Core/Src/dma_printf.c **** 
+  38:Core/Src/dma_printf.c ****     dma_ring_forward_r_ptr(&dmi.tx_ring, dmi.previous_send_len);
+ 219              		.loc 1 38 5 is_stmt 1 view .LVU45
+ 220 000e 104C     		ldr	r4, .L24
+ 221 0010 D4F81414 		ldr	r1, [r4, #1044]
+ 222 0014 2046     		mov	r0, r4
+ 223              	.LVL15:
+ 224              		.loc 1 38 5 is_stmt 0 view .LVU46
+ 225 0016 FFF7FEFF 		bl	dma_ring_forward_r_ptr
+ 226              	.LVL16:
+  39:Core/Src/dma_printf.c ****     uint16_t len = (uint16_t)dma_ring_available_linear(&dmi.tx_ring);
+ 227              		.loc 1 39 5 is_stmt 1 view .LVU47
+ 228              		.loc 1 39 30 is_stmt 0 view .LVU48
+ 229 001a 2046     		mov	r0, r4
+ 230 001c FFF7FEFF 		bl	dma_ring_available_linear
+ 231              	.LVL17:
+ 232              		.loc 1 39 14 view .LVU49
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 6
+
+
+ 233 0020 84B2     		uxth	r4, r0
+ 234              	.LVL18:
+  40:Core/Src/dma_printf.c ****     if (len > 0 ) {
+ 235              		.loc 1 40 5 is_stmt 1 view .LVU50
+ 236              		.loc 1 40 8 is_stmt 0 view .LVU51
+ 237 0022 24B9     		cbnz	r4, .L23
+  41:Core/Src/dma_printf.c ****         dmi.previous_send_len = len;
+  42:Core/Src/dma_printf.c ****         dmi.sending = true;
+  43:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+  44:Core/Src/dma_printf.c ****     }else{
+  45:Core/Src/dma_printf.c ****         dmi.sending = false;
+ 238              		.loc 1 45 9 is_stmt 1 view .LVU52
+ 239              		.loc 1 45 21 is_stmt 0 view .LVU53
+ 240 0024 0A4B     		ldr	r3, .L24
+ 241 0026 0022     		movs	r2, #0
+ 242 0028 C3F80C24 		str	r2, [r3, #1036]
+ 243              	.L15:
+  46:Core/Src/dma_printf.c ****     }
+  47:Core/Src/dma_printf.c **** }
+ 244              		.loc 1 47 1 view .LVU54
+ 245 002c 70BD     		pop	{r4, r5, r6, pc}
+ 246              	.LVL19:
+ 247              	.L23:
+  41:Core/Src/dma_printf.c ****         dmi.previous_send_len = len;
+ 248              		.loc 1 41 9 is_stmt 1 view .LVU55
+  41:Core/Src/dma_printf.c ****         dmi.previous_send_len = len;
+ 249              		.loc 1 41 31 is_stmt 0 view .LVU56
+ 250 002e 084D     		ldr	r5, .L24
+ 251 0030 C5F81444 		str	r4, [r5, #1044]
+  42:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+ 252              		.loc 1 42 9 is_stmt 1 view .LVU57
+  42:Core/Src/dma_printf.c ****         HAL_UART_Transmit_DMA(dmi.huart, dmi.tx_ring.buf+dma_ring_get_r_ptr(&dmi.tx_ring), len);
+ 253              		.loc 1 42 21 is_stmt 0 view .LVU58
+ 254 0034 0123     		movs	r3, #1
+ 255 0036 C5F80C34 		str	r3, [r5, #1036]
+  43:Core/Src/dma_printf.c ****     }else{
+ 256              		.loc 1 43 9 is_stmt 1 view .LVU59
+ 257 003a D5F81064 		ldr	r6, [r5, #1040]
+  43:Core/Src/dma_printf.c ****     }else{
+ 258              		.loc 1 43 58 is_stmt 0 view .LVU60
+ 259 003e 2846     		mov	r0, r5
+ 260 0040 FFF7FEFF 		bl	dma_ring_get_r_ptr
+ 261              	.LVL20:
+  43:Core/Src/dma_printf.c ****     }else{
+ 262              		.loc 1 43 9 view .LVU61
+ 263 0044 2246     		mov	r2, r4
+ 264 0046 2918     		adds	r1, r5, r0
+ 265 0048 3046     		mov	r0, r6
+ 266 004a FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+ 267              	.LVL21:
+ 268 004e EDE7     		b	.L15
+ 269              	.L25:
+ 270              		.align	2
+ 271              	.L24:
+ 272 0050 00000000 		.word	dmi
+ 273              		.cfi_endproc
+ 274              	.LFE126:
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 7
+
+
+ 276              		.global	dmi
+ 277              		.section	.bss.dmi,"aw",%nobits
+ 278              		.align	2
+ 281              	dmi:
+ 282 0000 00000000 		.space	1048
+ 282      00000000 
+ 282      00000000 
+ 282      00000000 
+ 282      00000000 
+ 283              		.text
+ 284              	.Letext0:
+ 285              		.file 2 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 286              		.file 3 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 287              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f303x8.h"
+ 288              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
+ 289              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
+ 290              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h"
+ 291              		.file 8 "Core/Inc/dma_ring.h"
+ 292              		.file 9 "Core/Inc/dma_printf.h"
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dma_printf.c
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:21     .text.dma_printf_init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:27     .text.dma_printf_init:00000000 dma_printf_init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:63     .text.dma_printf_init:0000001c $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:281    .bss.dmi:00000000 dmi
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:68     .text.dma_printf_putc:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:74     .text.dma_printf_putc:00000000 dma_printf_putc
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:140    .text.dma_printf_putc:0000003c $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:145    .text.dma_printf_puts:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:151    .text.dma_printf_puts:00000000 dma_printf_puts
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:189    .text.dma_printf_send_it:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:195    .text.dma_printf_send_it:00000000 dma_printf_send_it
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:272    .text.dma_printf_send_it:00000050 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccsXb4yp.s:278    .bss.dmi:00000000 $d
+
+UNDEFINED SYMBOLS
+dma_ring_init
+dma_ring_putc
+dma_ring_available_linear
+dma_ring_get_r_ptr
+HAL_UART_Transmit_DMA
+dma_ring_forward_r_ptr
