@@ -117,21 +117,19 @@ uint16_t electrical_angle(int16_t offset) {
 
     // 7回で一回転
     rotation %= 1170;
-    rotation *= 360;
-    rotation /= 1170;
-    rotation %= 360;
 
     return (uint16_t)rotation;
 }
 
-double cos_table[360];
-double sin_table[360];
+float cos_table[1170];
+
 void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     uint16_t sinwave[3];
 
     sinwave[0] = pwm_pwr + pwm_pwr * cos_table[(phase + 0) % 360];
     sinwave[1] = pwm_pwr + pwm_pwr * cos_table[(phase + 120) % 360];
     sinwave[2] = pwm_pwr + pwm_pwr * cos_table[(phase + 240) % 360];
+
     // A相
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, sinwave[0]);
 
@@ -143,8 +141,8 @@ void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, sinwave[2]);
 }
 
-void setVoltage(double a, double b, double c) {
-    double batt_voltage = 17;  // バッテリー電圧
+void setVoltage(float a, float b, float c) {
+    float batt_voltage = 17;  // バッテリー電圧
 
     // 電圧値を 0-1023 の範囲にマッピングする
     // 電圧 a, b, c をバッテリー電圧で正規化し、0〜1023の範囲にスケーリング
@@ -246,9 +244,8 @@ int main(void) {
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    for (int i = 0; i < 360; i++) {
-        cos_table[i] = cos(radians(i));
-        sin_table[i] = sin(radians(i));
+    for (int i = 0; i < 1170; i++) {
+        cos_table[i] = cos(radians(i * 360.0 / 1170.0));
     }
 
     dma_printf_puts("BLDRV Gen2\r\n");
@@ -269,17 +266,18 @@ int main(void) {
         /* USER CODE BEGIN 3 */
         uint16_t rotation = electrical_angle(offset);
 
-        double vol_q = 7;
-        double vol_d = 0;
+        float vol_q = 8;
+        float vol_d = 0;
 
-        double vol_alpha =
-            vol_d * cos_table[rotation] - vol_q * sin_table[rotation];
-        double vol_beta =
-            vol_d * sin_table[rotation] + vol_q * cos_table[rotation];
+        float vol_alpha = vol_d * cos_table[rotation] -
+                          vol_q * cos_table[(rotation + 877) % 1170];
 
-        double vol_u = 0.81649658 * vol_alpha;
-        double vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
-        double vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
+        float vol_beta = vol_d * cos_table[(rotation + 877) % 1170] +
+                         vol_q * cos_table[rotation];
+
+        float vol_u = 0.81649658 * vol_alpha;
+        float vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
+        float vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
 
         setVoltage(vol_u, vol_v, vol_w);
 
@@ -318,7 +316,7 @@ void SystemClock_Config(void) {
                                   RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
