@@ -126,9 +126,9 @@ float cos_table[1170];
 void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     uint16_t sinwave[3];
 
-    sinwave[0] = pwm_pwr + pwm_pwr * cos_table[(phase + 0) % 360];
-    sinwave[1] = pwm_pwr + pwm_pwr * cos_table[(phase + 120) % 360];
-    sinwave[2] = pwm_pwr + pwm_pwr * cos_table[(phase + 240) % 360];
+    sinwave[0] = pwm_pwr + pwm_pwr * cos_table[(phase + 0) % 1170];
+    sinwave[1] = pwm_pwr + pwm_pwr * cos_table[(phase + 390) % 1170];
+    sinwave[2] = pwm_pwr + pwm_pwr * cos_table[(phase + 780) % 1170];
 
     // A相
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, sinwave[0]);

@@ -1802,30 +1802,29 @@ LOAD /opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
                 0x08000f30       0x2c build/main.o
                 0x08000f30                electrical_angle
  .text.setPhase
-                0x08000f5c       0xc4 build/main.o
+                0x08000f5c       0xc8 build/main.o
                 0x08000f5c                setPhase
  .text.setVoltage
-                0x08001020       0x6c build/main.o
-                0x08001020                setVoltage
+                0x08001024       0x6c build/main.o
+                0x08001024                setVoltage
  .text.uint2char
-                0x0800108c       0x6c build/main.o
-                0x0800108c                uint2char
+                0x08001090       0x6c build/main.o
+                0x08001090                uint2char
  .text.HAL_UART_TxCpltCallback
-                0x080010f8        0x8 build/main.o
-                0x080010f8                HAL_UART_TxCpltCallback
+                0x080010fc        0x8 build/main.o
+                0x080010fc                HAL_UART_TxCpltCallback
  .text.__io_putchar
-                0x08001100        0xe build/main.o
-                0x08001100                __io_putchar
+                0x08001104        0xe build/main.o
+                0x08001104                __io_putchar
  .text.__io_getchar
-                0x0800110e        0x8 build/main.o
-                0x0800110e                __io_getchar
+                0x08001112        0x8 build/main.o
+                0x08001112                __io_getchar
  .text.Error_Handler
-                0x08001116        0x4 build/main.o
-                0x08001116                Error_Handler
+                0x0800111a        0x4 build/main.o
+                0x0800111a                Error_Handler
  .text.SystemClock_Config
-                0x0800111a       0x82 build/main.o
-                0x0800111a                SystemClock_Config
- *fill*         0x0800119c        0x4 
+                0x0800111e       0x82 build/main.o
+                0x0800111e                SystemClock_Config
  .text.main     0x080011a0      0x280 build/main.o
                 0x080011a0                main
  .text.MX_GPIO_Init
