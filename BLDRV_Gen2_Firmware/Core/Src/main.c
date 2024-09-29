@@ -126,9 +126,11 @@ float cos_table[1170];
 void setPhase(uint16_t phase, uint16_t pwm_pwr) {
     uint16_t sinwave[3];
 
+    pwm_pwr = pwm_pwr > 320 ? 320 : pwm_pwr;
+
     sinwave[0] = pwm_pwr + pwm_pwr * cos_table[(phase + 0) % 1170];
-    sinwave[1] = pwm_pwr + pwm_pwr * cos_table[(phase + 390) % 1170];
-    sinwave[2] = pwm_pwr + pwm_pwr * cos_table[(phase + 780) % 1170];
+    sinwave[1] = pwm_pwr + pwm_pwr * cos_table[(phase + 780) % 1170];
+    sinwave[2] = pwm_pwr + pwm_pwr * cos_table[(phase + 390) % 1170];
 
     // A相
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, sinwave[0]);
@@ -227,19 +229,13 @@ void senseOut() {
 }
 
 short velocity = 0;
+const uint8_t pre_scaler = 3;
+int16_t velocity_ref = 0;
 
-float ref_q = -0.4;
+int16_t pwm = 0;
 
-float err_d;
-static float err_d_int = 0;
-
-float err_q;
-static float err_q_int = 0;
-
-static float curr_d_filterd = 0;
-static float curr_q_filterd = 0;
-
-const uint8_t pre_scaler = 7;
+const uint8_t id = 0;
+uint8_t isReleased = 1;
 /* USER CODE END 0 */
 
 /**
@@ -284,7 +280,7 @@ int main(void) {
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
     dma_printf_init(&huart1);
-    dma_scanf_init(&huart1);
+    // dma_scanf_init(&huart1);
 
     // A相
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);     // H
@@ -321,32 +317,66 @@ int main(void) {
         cos_table[i] = cos(radians(i * 360.0 / 1170.0));
     }
 
-    dma_printf_puts("BLDRV Gen2\r\n");
-    dma_printf_puts("Calibration Start\r\n");
-    setPhase(0, 50);
-    HAL_Delay(500);
+    // dma_printf_puts("BLDRV Gen2\r\n");
+    // dma_printf_puts("Calibration Start\r\n");
+    // setPhase(0, 100);
+    // HAL_Delay(1000);
 
-    offset = getRotation();  // なんか2回いる
-    offset = getRotation();
-    dma_printf_puts("Offset: ");
-    dma_printf_puts(uint2char(offset));
-    dma_printf_puts("\r\n");
-    dma_printf_puts("Calibration End\r\n");
+    // offset = getRotation();  // なんか3回いる
+    // offset = getRotation();
+    // dma_printf_puts("Offset: ");
+    // dma_printf_puts(uint2char(offset));
+    // dma_printf_puts("\r\n");
+    // dma_printf_puts("Calibration End\r\n");
+
+    offset = 2853;
 
     HAL_TIM_Base_Start_IT(&htim2);
+
+    uint8_t ring_buf[2] = {0};
+    ring_buf[0] = 0B01000000;
+    ring_buf[1] = 0B11000000;
+
+    HAL_UART_Receive_DMA(&huart1, ring_buf, 2);
+
+    ring_buf[0] = 0B01000000;
+    ring_buf[1] = 0B11000000;
+
+    while (!(ring_buf[0] == 0B11111111 && ring_buf[1] == 0B11111111)) {
+        printf("waiting\t%d\t%d\n", ring_buf[0], ring_buf[1]);
+    }
+    ring_buf[0] = 0B01000000;
+    ring_buf[1] = 0B11000000;
+
+    printf("start\n");
 
     while (1) {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
 
-        // dma_printf_puts("Angle: ");
-        // dma_printf_puts(uint2char(velocity));
-        // dma_printf_puts("\r\n");
-        printf("%f\n", curr_q_filterd);
+        printf("ref,pwm,real:%d\t%d\t%d\n", velocity_ref, pwm, velocity);
 
-        // printf("%f\t%f\t%f\n", sense[0], sense[1], sense[2]);
-        // printf("ADC: %d %d %d\n", adcBuffer[0], adcBuffer[1], adcBuffer[2]);
+        uint8_t index = 0;
+        for (int i = 0; i < 2; i++) {
+            if (ring_buf[i] >> 7 == id) {
+                index = i;
+                break;
+            }
+        }
+
+        int8_t _ref = ((ring_buf[index] & 0x7F) << 1);
+
+        if (_ref < -120) {
+            isReleased = 1;
+        } else {
+            isReleased = 0;
+        }
+
+        velocity_ref = _ref * 2;
+
+        // printf("%d\t%d\t%d\t%d\n", ring_buf[0], ring_buf[1], _ref,
+        // velocity_ref); printf("%d\n", _ref);
     }
     /* USER CODE END 3 */
 }
@@ -431,51 +461,44 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
         }
         count++;
 
-        senseOut();
+        static int32_t err_vel = 0;
+        static int32_t int_err_vel = 0;
 
-        // alpha beta
-        float curr_alpha =
-            0.8169496580928 * (sense[0] - 0.5 * (sense[1] + sense[2]));
-        float curr_beta = 0.7071067811866 * (sense[1] - sense[2]);
+        int32_t err = velocity_ref - velocity;
+        int_err_vel += err;
 
-        // // dq
-        float curr_d = curr_alpha * cos_table[rotation] +
-                       curr_beta * cos_table[(rotation + 877) % 1170];
-        float curr_q = -curr_alpha * cos_table[(rotation + 877) % 1170] +
-                       curr_beta * cos_table[rotation];
+        const float kp = 1.2;
+        const float ki = 0.04;
 
-        const float alpha = 0.0001;
-        curr_d_filterd = (1.0 - alpha) * curr_d_filterd + alpha * curr_d;
-        curr_q_filterd = (1.0 - alpha) * curr_q_filterd + alpha * curr_q;
+        pwm = kp * err + ki * int_err_vel;
 
-        // err_d = 0.0 - curr_d;
-        // err_d_int += err_d;
-        // float vol_d = 0.5 * err_d + 0.0005 * err_d_int;
-
-        // err_q = ref_q - curr_q;
-        // err_q_int += err_q;
-
-        // float vol_q = 0.5 * err_q + 0.0005 * err_q_int;
-
-        float vol_d = 0;
-        float vol_q = HAL_GetTick() / 1000.0;
-        if (vol_q > 7) {
-            vol_q = 7;
+        const int max_int_err_vel = 7000;
+        if (int_err_vel > max_int_err_vel) {
+            int_err_vel = max_int_err_vel;
+        } else if (int_err_vel < -max_int_err_vel) {
+            int_err_vel = -max_int_err_vel;
         }
 
-        vol_q *= 1;
+        const int max_pwm = 320;
+        if (pwm > max_pwm) {
+            pwm = max_pwm;
+        } else if (pwm < -max_pwm) {
+            pwm = -max_pwm;
+        }
 
-        float vol_alpha = vol_d * cos_table[rotation] -
-                          vol_q * cos_table[(rotation + 877) % 1170];
+        if (pwm < 10 && pwm > -10) {
+            pwm = 0;
+        }
 
-        float vol_beta = vol_d * cos_table[(rotation + 877) % 1170] +
-                         vol_q * cos_table[rotation];
+        if (isReleased) {
+            pwm = 0;
+        }
 
-        float vol_u = 0.81649658 * vol_alpha;
-        float vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
-        float vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
-
-        setVoltage(vol_u, vol_v, vol_w);
+        if (pwm > 0) {
+            setPhase((rotation + 292) % 1170, pwm);
+        } else {
+            setPhase((rotation + 877) % 1170, -pwm);
+        }
     }
 }
 
