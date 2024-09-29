@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
@@ -103,6 +104,7 @@ uint16_t AS5048A_read(uint16_t registerAddress) {
     return response & 0x3FFF;  // データ部分のみ返す
 }
 
+int offset = 0;
 int16_t getRotation() {
     uint16_t data = AS5048A_read(AS5048A_ANGLE);
     int16_t rotation = (int16_t)data;
@@ -110,10 +112,8 @@ int16_t getRotation() {
 }
 
 // 電気角
-uint16_t electrical_angle(int16_t offset) {
-    uint32_t rotation = getRotation() - offset;
-    rotation += 8192;
-    rotation %= 8192;
+uint16_t electrical_angle(int16_t real_angle) {
+    uint32_t rotation = real_angle;
 
     // 7回で一回転
     rotation %= 1170;
@@ -150,6 +150,19 @@ void setVoltage(float a, float b, float c) {
     int int_b = (int)((b / batt_voltage) * 1023) + 512;
     int int_c = (int)((c / batt_voltage) * 1023) + 512;
 
+    // clip [ 100, 900 ]
+    int clip_low = 200;
+    int clip_high = 800;
+
+    int_a = int_a < clip_low ? clip_low : int_a;
+    int_a = int_a > clip_high ? clip_high : int_a;
+
+    int_b = int_b < clip_low ? clip_low : int_b;
+    int_b = int_b > clip_high ? clip_high : int_b;
+
+    int_c = int_c < clip_low ? clip_low : int_c;
+    int_c = int_c > clip_high ? clip_high : int_c;
+
     // PWM信号を各チャネルに設定
     // A相
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, int_a);
@@ -173,6 +186,56 @@ char *uint2char(uint16_t num) {
     return str;
 }
 
+uint16_t adcBuffer[3];  // PA0, PA1, PA2の3つのチャンネル分のデータ
+uint16_t adcOffset[3];  // オフセット値
+
+float sense[3];
+void senseOut() {
+    float _sense[3];
+    _sense[0] = 0.995832 * (adcBuffer[0] - 2048) -
+                0.028199 * (adcBuffer[1] - 2048) -
+                0.014988 * (adcBuffer[2] - 2048);
+
+    _sense[1] = 0.037737 * (adcBuffer[0] - 2048) +
+                1.007723 * (adcBuffer[1] - 2048) -
+                0.033757 * (adcBuffer[2] - 2048);
+
+    _sense[2] = -0.014988 * (adcBuffer[0] - 2048) -
+                0.028199 * (adcBuffer[1] - 2048) +
+                0.995832 * (adcBuffer[2] - 2048);
+
+    float gain = 1.2;
+    float scaleFactor = 3.3 / 4096.0;
+
+    _sense[0] = (_sense[0] * scaleFactor) / gain;
+    _sense[1] = (_sense[1] * scaleFactor) / gain;
+    _sense[2] = (_sense[2] * scaleFactor) / gain;
+
+    // 　ローパスフィルタ
+    const float alpha = 1.0;
+    sense[0] = (1.0 - alpha) * sense[0] + alpha * _sense[0];
+    sense[1] = (1.0 - alpha) * sense[1] + alpha * _sense[1];
+    sense[2] = (1.0 - alpha) * sense[2] + alpha * _sense[2];
+
+    // sense_A += 0.5;
+    // sense_B += 0.45;
+    // sense_C += 0.33;
+}
+
+short velocity = 0;
+
+float ref_q = -0.4;
+
+float err_d;
+static float err_d_int = 0;
+
+float err_q;
+static float err_q_int = 0;
+
+static float curr_d_filterd = 0;
+static float curr_q_filterd = 0;
+
+const uint8_t pre_scaler = 7;
 /* USER CODE END 0 */
 
 /**
@@ -209,9 +272,9 @@ int main(void) {
     MX_TIM16_Init();
     MX_TIM2_Init();
     MX_TIM3_Init();
-    MX_TIM6_Init();
     MX_SPI1_Init();
     MX_USART1_UART_Init();
+    MX_ADC1_Init();
     /* USER CODE BEGIN 2 */
     setbuf(stdin, NULL);
     setbuf(stdout, NULL);
@@ -232,18 +295,24 @@ int main(void) {
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);  // L
 
     // デバッグ用LED
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    // HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 
     // タイマー用
-    HAL_TIM_Base_Start(&htim6);
 
     // DRVOFF
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
 
+    HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
+
+    if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adcBuffer, 3) == HAL_OK)
+        printf("Start ADC Successfully\n\r");
+    else
+        printf("Start ADC failed\n\r");
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
+
     for (int i = 0; i < 1170; i++) {
         cos_table[i] = cos(radians(i * 360.0 / 1170.0));
     }
@@ -253,37 +322,26 @@ int main(void) {
     setPhase(0, 50);
     HAL_Delay(500);
 
-    int offset = getRotation();
+    offset = getRotation();  // なんか2回いる
     offset = getRotation();
     dma_printf_puts("Offset: ");
     dma_printf_puts(uint2char(offset));
     dma_printf_puts("\r\n");
     dma_printf_puts("Calibration End\r\n");
 
+    HAL_TIM_Base_Start_IT(&htim2);
+
     while (1) {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        uint16_t rotation = electrical_angle(offset);
 
-        float vol_q = 8;
-        float vol_d = 0;
-
-        float vol_alpha = vol_d * cos_table[rotation] -
-                          vol_q * cos_table[(rotation + 877) % 1170];
-
-        float vol_beta = vol_d * cos_table[(rotation + 877) % 1170] +
-                         vol_q * cos_table[rotation];
-
-        float vol_u = 0.81649658 * vol_alpha;
-        float vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
-        float vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
-
-        setVoltage(vol_u, vol_v, vol_w);
-
-        // dma_printf_puts("Angle: ");
-        // dma_printf_puts(uint2char(rotation));
+        // dma_printf_puts("Angle: \n");
+        // dma_printf_puts(uint2char(velocity));
         // dma_printf_puts("\r\n");
+
+        // printf("%f\t%f\t%f\n", sense[0], sense[1], sense[2]);
+        // printf("ADC: %d %d %d\n", adcBuffer[0], adcBuffer[1], adcBuffer[2]);
     }
     /* USER CODE END 3 */
 }
@@ -342,6 +400,77 @@ int __io_putchar(int ch) {
 
 int __io_getchar(void) {
     return dma_scanf_getc_blocking();
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim == &htim2) {
+        short real_angle = getRotation() - offset;
+
+        uint16_t rotation = electrical_angle(real_angle);
+
+        // static uint8_t count = 0;
+        // // if (32 / (pre_scaler + 1) == count) {
+        // count = 0;
+
+        // static short old_real_angle = 0;
+        // real_angle += 8192;
+        // real_angle %= 8192;
+
+        // velocity = real_angle - old_real_angle;
+        // if (velocity > 4096) {
+        //     velocity -= 8192;
+        // } else if (velocity < -4096) {
+        //     velocity += 8192;
+        // }
+
+        // old_real_angle = real_angle;
+        // // }
+        // count++;
+
+        // senseOut();
+
+        // // alpha beta
+        // float curr_alpha =
+        //     0.8169496580928 * (sense[0] - 0.5 * (sense[1] + sense[2]));
+        // float curr_beta = 0.7071067811866 * (sense[1] - sense[2]);
+
+        // // // dq
+        // float curr_d = curr_alpha * cos_table[rotation] +
+        //                curr_beta * cos_table[(rotation + 877) % 1170];
+        // float curr_q = -curr_alpha * cos_table[(rotation + 877) % 1170] +
+        //                curr_beta * cos_table[rotation];
+
+        // const float alpha = 0.1;
+        // curr_d_filterd = (1.0 - alpha) * curr_d_filterd + alpha * curr_d;
+        // curr_q_filterd = (1.0 - alpha) * curr_q_filterd + alpha * curr_q;
+
+        // err_d = 0.0 - curr_d;
+        // err_d_int += err_d;
+        // float vol_d = 0.5 * err_d + 0.0005 * err_d_int;
+
+        // err_q = ref_q - curr_q;
+        // err_q_int += err_q;
+
+        // float vol_q = 0.5 * err_q + 0.0005 * err_q_int;
+
+        float vol_d = 0;
+        float vol_q = HAL_GetTick() / 1000.0;
+        if (vol_q > 9) {
+            vol_q = 9;
+        }
+
+        float vol_alpha = vol_d * cos_table[rotation] -
+                          vol_q * cos_table[(rotation + 877) % 1170];
+
+        float vol_beta = vol_d * cos_table[(rotation + 877) % 1170] +
+                         vol_q * cos_table[rotation];
+
+        float vol_u = 0.81649658 * vol_alpha;
+        float vol_v = -0.40824829 * vol_alpha + 0.707106781 * vol_beta;
+        float vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
+
+        setVoltage(vol_u, vol_v, vol_w);
+    }
 }
 
 /* USER CODE END 4 */

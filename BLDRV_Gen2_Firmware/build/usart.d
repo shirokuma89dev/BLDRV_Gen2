@@ -16,6 +16,8 @@ build/usart.o: Core/Src/usart.c Core/Inc/usart.h Core/Inc/main.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma_ex.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_cortex.h \
+ Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h \
+ Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc_ex.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash_ex.h \
  Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c.h \
@@ -49,6 +51,8 @@ Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_exti.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma_ex.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_cortex.h:
+Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h:
+Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc_ex.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash_ex.h:
 Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c.h:

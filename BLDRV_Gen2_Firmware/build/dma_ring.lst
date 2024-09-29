@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
   49              	.LFE126:
   51              		.section	.text.dma_ring_init,"ax",%progbits
   52              		.align	1
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 2
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 2
 
 
   53              		.global	dma_ring_init
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  100              		@ args = 0, pretend = 0, frame = 0
  101              		@ frame_needed = 0, uses_anonymous_args = 0
  102              		.loc 1 17 57 is_stmt 0 view .LVU20
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 3
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 3
 
 
  103 0000 38B5     		push	{r3, r4, r5, lr}
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  149              	.LVL6:
  150              	.L3:
   26:Core/Src/dma_ring.c **** }
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 4
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 4
 
 
  151              		.loc 1 26 1 view .LVU39
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
   34:Core/Src/dma_ring.c ****     return RING_FAIL;
   35:Core/Src/dma_ring.c ****   }
   36:Core/Src/dma_ring.c ****   ring->buf[ring->w_ptr] = c;
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 5
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 5
 
 
  199              		.loc 1 36 3 is_stmt 1 view .LVU52
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  244 0000 10B5     		push	{r4, lr}
  245              	.LCFI1:
  246              		.cfi_def_cfa_offset 8
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 6
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 6
 
 
  247              		.cfi_offset 4, -8
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  291              		.cfi_startproc
  292              		@ args = 0, pretend = 0, frame = 0
  293              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 7
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 7
 
 
  294              		@ link register save eliminated.
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  340              	.LVL23:
  341              		.loc 1 59 1 view .LVU94
  342 0004 7047     		bx	lr
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 8
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 8
 
 
  343              		.cfi_endproc
@@ -478,7 +478,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  390              		.loc 1 70 19 is_stmt 0 view .LVU103
  391 0002 0133     		adds	r3, r3, #1
  392 0004 A0F80434 		strh	r3, [r0, #1028]	@ movhi
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 9
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 9
 
 
  393              	.L27:
@@ -538,7 +538,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  435              		@ args = 0, pretend = 0, frame = 0
  436              		@ frame_needed = 0, uses_anonymous_args = 0
  437              		@ link register save eliminated.
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 10
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 10
 
 
   77:Core/Src/dma_ring.c ****     ring->w_ptr = w_ptr;
@@ -598,7 +598,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
   79:Core/Src/dma_ring.c **** void dma_ring_debug(struct dma_ring_buf *ring){
  472              		.loc 1 79 47 is_stmt 1 view -0
  473              		.cfi_startproc
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 11
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 11
 
 
  474              		@ args = 0, pretend = 0, frame = 0
@@ -658,7 +658,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  522              	.LFE136:
  524              		.text
  525              	.Letext0:
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 12
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 12
 
 
  526              		.file 2 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
@@ -670,35 +670,35 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 1
  532              		.file 8 "Core/Inc/dma_ring.h"
  533              		.file 9 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
  534              		.file 10 "<built-in>"
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s 			page 13
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dma_ring.c
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:21     .text.update_w_ptr:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:26     .text.update_w_ptr:00000000 update_w_ptr
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:52     .text.dma_ring_init:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:58     .text.dma_ring_init:00000000 dma_ring_init
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:89     .text.dma_ring_getc:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:95     .text.dma_ring_getc:00000000 dma_ring_getc
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:162    .text.dma_ring_putc:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:168    .text.dma_ring_putc:00000000 dma_ring_putc
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:230    .text.dma_ring_available:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:236    .text.dma_ring_available:00000000 dma_ring_available
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:281    .text.dma_ring_available_linear:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:287    .text.dma_ring_available_linear:00000000 dma_ring_available_linear
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:323    .text.dma_ring_get_w_ptr:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:329    .text.dma_ring_get_w_ptr:00000000 dma_ring_get_w_ptr
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:347    .text.dma_ring_get_r_ptr:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:353    .text.dma_ring_get_r_ptr:00000000 dma_ring_get_r_ptr
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:371    .text.dma_ring_forward_r_ptr:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:377    .text.dma_ring_forward_r_ptr:00000000 dma_ring_forward_r_ptr
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:424    .text.dma_ring_set_w_ptr:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:430    .text.dma_ring_set_w_ptr:00000000 dma_ring_set_w_ptr
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:447    .rodata.dma_ring_debug.str1.4:00000000 $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:463    .text.dma_ring_debug:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:469    .text.dma_ring_debug:00000000 dma_ring_debug
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccvFoLbs.s:516    .text.dma_ring_debug:00000034 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:21     .text.update_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:26     .text.update_w_ptr:00000000 update_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:52     .text.dma_ring_init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:58     .text.dma_ring_init:00000000 dma_ring_init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:89     .text.dma_ring_getc:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:95     .text.dma_ring_getc:00000000 dma_ring_getc
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:162    .text.dma_ring_putc:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:168    .text.dma_ring_putc:00000000 dma_ring_putc
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:230    .text.dma_ring_available:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:236    .text.dma_ring_available:00000000 dma_ring_available
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:281    .text.dma_ring_available_linear:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:287    .text.dma_ring_available_linear:00000000 dma_ring_available_linear
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:323    .text.dma_ring_get_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:329    .text.dma_ring_get_w_ptr:00000000 dma_ring_get_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:347    .text.dma_ring_get_r_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:353    .text.dma_ring_get_r_ptr:00000000 dma_ring_get_r_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:371    .text.dma_ring_forward_r_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:377    .text.dma_ring_forward_r_ptr:00000000 dma_ring_forward_r_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:424    .text.dma_ring_set_w_ptr:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:430    .text.dma_ring_set_w_ptr:00000000 dma_ring_set_w_ptr
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:447    .rodata.dma_ring_debug.str1.4:00000000 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:463    .text.dma_ring_debug:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:469    .text.dma_ring_debug:00000000 dma_ring_debug
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5DojWR.s:516    .text.dma_ring_debug:00000034 $d
 
 UNDEFINED SYMBOLS
 puts
