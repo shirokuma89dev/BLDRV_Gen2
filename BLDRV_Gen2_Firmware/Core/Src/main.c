@@ -156,7 +156,7 @@ void setVoltage(float a, float b, float c) {
 
     int_a = int_a < clip_low ? clip_low : int_a;
     int_a = int_a > clip_high ? clip_high : int_a;
-    
+
     int_b = int_b < clip_low ? clip_low : int_b;
     int_b = int_b > clip_high ? clip_high : int_b;
 
@@ -212,7 +212,7 @@ void senseOut() {
     _sense[2] = (_sense[2] * scaleFactor) / gain;
 
     // 　ローパスフィルタ
-    const float alpha = 0.08;
+    const float alpha = 1.0;
     sense[0] = (1.0 - alpha) * sense[0] + alpha * _sense[0];
     sense[1] = (1.0 - alpha) * sense[1] + alpha * _sense[1];
     sense[2] = (1.0 - alpha) * sense[2] + alpha * _sense[2];
@@ -221,6 +221,21 @@ void senseOut() {
     // sense_B += 0.45;
     // sense_C += 0.33;
 }
+
+short velocity = 0;
+
+float ref_q = -0.4;
+
+float err_d;
+static float err_d_int = 0;
+
+float err_q;
+static float err_q_int = 0;
+
+static float curr_d_filterd = 0;
+static float curr_q_filterd = 0;
+
+const uint8_t pre_scaler = 7;
 /* USER CODE END 0 */
 
 /**
@@ -321,8 +336,8 @@ int main(void) {
 
         /* USER CODE BEGIN 3 */
 
-        // dma_printf_puts("Angle: ");
-        // dma_printf_puts(uint2char(rotation));
+        // dma_printf_puts("Angle: \n");
+        // dma_printf_puts(uint2char(velocity));
         // dma_printf_puts("\r\n");
 
         // printf("%f\t%f\t%f\n", sense[0], sense[1], sense[2]);
@@ -387,60 +402,62 @@ int __io_getchar(void) {
     return dma_scanf_getc_blocking();
 }
 
-int old_real_angle = 0;
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim == &htim2) {
-        int16_t real_angle = getRotation() - offset;
-        real_angle += 8192;
-        real_angle %= 8192;
-
-        int velocity = real_angle - old_real_angle;
-        if (velocity > 4096) {
-            velocity -= 8192;
-        } else if (velocity < -4096) {
-            velocity += 8192;
-        }
-
-        old_real_angle = real_angle;
+        short real_angle = getRotation() - offset;
 
         uint16_t rotation = electrical_angle(real_angle);
 
-        senseOut();
+        // static uint8_t count = 0;
+        // // if (32 / (pre_scaler + 1) == count) {
+        // count = 0;
 
-        float ref_vel = ((HAL_GetTick() / 1000) % 2) ? 4 : 0;
+        // static short old_real_angle = 0;
+        // real_angle += 8192;
+        // real_angle %= 8192;
 
-        float err_vel = ref_vel - velocity;
-        static float err_vel_int = 0;
-        err_vel_int += err_vel;
+        // velocity = real_angle - old_real_angle;
+        // if (velocity > 4096) {
+        //     velocity -= 8192;
+        // } else if (velocity < -4096) {
+        //     velocity += 8192;
+        // }
 
-        float vol_q = ref_vel;
+        // old_real_angle = real_angle;
+        // // }
+        // count++;
 
-        // float err_d;
-        // static float err_d_int = 0;
-        // float err_q;
-        // static float err_q_int = 0;
+        // senseOut();
 
         // // alpha beta
         // float curr_alpha =
         //     0.8169496580928 * (sense[0] - 0.5 * (sense[1] + sense[2]));
         // float curr_beta = 0.7071067811866 * (sense[1] - sense[2]);
 
-        // // dq
+        // // // dq
         // float curr_d = curr_alpha * cos_table[rotation] +
         //                curr_beta * cos_table[(rotation + 877) % 1170];
         // float curr_q = -curr_alpha * cos_table[(rotation + 877) % 1170] +
         //                curr_beta * cos_table[rotation];
 
+        // const float alpha = 0.1;
+        // curr_d_filterd = (1.0 - alpha) * curr_d_filterd + alpha * curr_d;
+        // curr_q_filterd = (1.0 - alpha) * curr_q_filterd + alpha * curr_q;
+
         // err_d = 0.0 - curr_d;
         // err_d_int += err_d;
-        // float vol_d = 1.2 * err_d + 0.0008 * err_d_int;
+        // float vol_d = 0.5 * err_d + 0.0005 * err_d_int;
 
         // err_q = ref_q - curr_q;
         // err_q_int += err_q;
 
-        // float vol_q = 1.2 * err_q + 0.0008 * err_q_int;
-        float vol_d = 0.0;
+        // float vol_q = 0.5 * err_q + 0.0005 * err_q_int;
+
+        float vol_d = 0;
+        float vol_q = HAL_GetTick() / 1000.0;
+        if (vol_q > 9) {
+            vol_q = 9;
+        }
 
         float vol_alpha = vol_d * cos_table[rotation] -
                           vol_q * cos_table[(rotation + 877) % 1170];
@@ -453,9 +470,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
         float vol_w = -0.40824829 * vol_alpha - 0.707106781 * vol_beta;
 
         setVoltage(vol_u, vol_v, vol_w);
-
-        // printf("vol_q: %5f\tvol_d: %5f\tcurr_q: %5f\tcurr_d: %5f\n", vol_q,
-        //        vol_d, curr_q, curr_d);
     }
 }
 
