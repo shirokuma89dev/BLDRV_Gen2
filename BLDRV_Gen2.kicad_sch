@@ -6206,7 +6206,7 @@
 	)
 	(wire
 		(pts
-			(xy 34.29 146.05) (xy 43.18 146.05)
+			(xy 34.29 146.05) (xy 41.91 146.05)
 		)
 		(stroke
 			(width 0)
@@ -8098,6 +8098,8 @@
 		(effects
 			(font
 				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
@@ -8153,7 +8155,7 @@
 		(effects
 			(font
 				(size 1.27 1.27)
-				(bold yes)
+				(thickness 0.1588)
 			)
 			(justify left bottom)
 		)
@@ -8244,8 +8246,7 @@
 		(effects
 			(font
 				(size 1.27 1.27)
-				(thickness 0.254)
-				(bold yes)
+				(thickness 0.1588)
 			)
 			(justify right bottom)
 		)
@@ -8257,7 +8258,7 @@
 		(effects
 			(font
 				(size 1.27 1.27)
-				(bold yes)
+				(thickness 0.1588)
 			)
 			(justify right bottom)
 		)
@@ -8730,7 +8731,7 @@
 		(uuid "b5ab416a-9925-48b7-b765-b84cbeac1cc8")
 	)
 	(label "OCP{slash}SR"
-		(at 43.18 146.05 180)
+		(at 41.91 146.05 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8790,6 +8791,8 @@
 		(effects
 			(font
 				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
@@ -8881,7 +8884,7 @@
 		(effects
 			(font
 				(size 1.27 1.27)
-				(bold yes)
+				(thickness 0.1588)
 			)
 			(justify left bottom)
 		)
@@ -8962,6 +8965,8 @@
 		(effects
 			(font
 				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
