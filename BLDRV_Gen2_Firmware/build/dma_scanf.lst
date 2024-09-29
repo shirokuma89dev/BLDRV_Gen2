@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 1
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 1
   44 0006 C4F80C04 		str	r0, [r4, #1036]
   13:Core/Src/dma_scanf.c ****     dma_ring_init(&dsi.rx_ring, scanf_huart);
   45              		.loc 1 13 5 is_stmt 1 view .LVU4
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 2
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s 			page 2
 
 
   46 000a 2046     		mov	r0, r4
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 1
   96 0010 5B6F     		ldr	r3, [r3, #116]
   97 0012 1B68     		ldr	r3, [r3]
   98 0014 5B68     		ldr	r3, [r3, #4]
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 3
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s 			page 3
 
 
   99              		.loc 1 19 9 view .LVU14
@@ -178,26 +178,26 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 1
  144              		.file 3 "/opt/ST/STM32CubeCLT_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
  145              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f303x8.h"
  146              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 4
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s 			page 4
 
 
  147              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
  148              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h"
  149              		.file 8 "Core/Inc/dma_ring.h"
  150              		.file 9 "Core/Inc/dma_scanf.h"
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s 			page 5
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dma_scanf.c
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:21     .text.dma_scanf_init:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:27     .text.dma_scanf_init:00000000 dma_scanf_init
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:62     .text.dma_scanf_init:00000020 $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:139    .bss.dsi:00000000 dsi
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:67     .text.dma_scanf_getc_blocking:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:73     .text.dma_scanf_getc_blocking:00000000 dma_scanf_getc_blocking
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:130    .text.dma_scanf_getc_blocking:0000003c $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccg3cgvK.s:136    .bss.dsi:00000000 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:21     .text.dma_scanf_init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:27     .text.dma_scanf_init:00000000 dma_scanf_init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:62     .text.dma_scanf_init:00000020 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:139    .bss.dsi:00000000 dsi
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:67     .text.dma_scanf_getc_blocking:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:73     .text.dma_scanf_getc_blocking:00000000 dma_scanf_getc_blocking
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:130    .text.dma_scanf_getc_blocking:0000003c $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccJNKBNh.s:136    .bss.dsi:00000000 $d
 
 UNDEFINED SYMBOLS
 dma_ring_init

@@ -213,9 +213,13 @@ void senseOut() {
 
     // 　ローパスフィルタ
     const float alpha = 1.0;
-    sense[0] = (1.0 - alpha) * sense[0] + alpha * _sense[0];
-    sense[1] = (1.0 - alpha) * sense[1] + alpha * _sense[1];
-    sense[2] = (1.0 - alpha) * sense[2] + alpha * _sense[2];
+    // sense[0] = (1.0 - alpha) * sense[0] + alpha * _sense[0];
+    // sense[1] = (1.0 - alpha) * sense[1] + alpha * _sense[1];
+    // sense[2] = (1.0 - alpha) * sense[2] + alpha * _sense[2];
+
+    sense[0] = _sense[0];
+    sense[1] = _sense[1];
+    sense[2] = _sense[2];
 
     // sense_A += 0.5;
     // sense_B += 0.45;
@@ -336,9 +340,10 @@ int main(void) {
 
         /* USER CODE BEGIN 3 */
 
-        // dma_printf_puts("Angle: \n");
+        // dma_printf_puts("Angle: ");
         // dma_printf_puts(uint2char(velocity));
         // dma_printf_puts("\r\n");
+        printf("%f\n", curr_q_filterd);
 
         // printf("%f\t%f\t%f\n", sense[0], sense[1], sense[2]);
         // printf("ADC: %d %d %d\n", adcBuffer[0], adcBuffer[1], adcBuffer[2]);
@@ -405,44 +410,43 @@ int __io_getchar(void) {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim == &htim2) {
         short real_angle = getRotation() - offset;
-
+        real_angle += 8192;
+        real_angle %= 8192;
         uint16_t rotation = electrical_angle(real_angle);
 
-        // static uint8_t count = 0;
-        // // if (32 / (pre_scaler + 1) == count) {
-        // count = 0;
+        static uint8_t count = 0;
+        if (32 / (pre_scaler + 1) == count) {
+            count = 0;
 
-        // static short old_real_angle = 0;
-        // real_angle += 8192;
-        // real_angle %= 8192;
+            static short old_real_angle = 0;
 
-        // velocity = real_angle - old_real_angle;
-        // if (velocity > 4096) {
-        //     velocity -= 8192;
-        // } else if (velocity < -4096) {
-        //     velocity += 8192;
-        // }
+            velocity = real_angle - old_real_angle;
+            if (velocity > 4096) {
+                velocity -= 8192;
+            } else if (velocity < -4096) {
+                velocity += 8192;
+            }
 
-        // old_real_angle = real_angle;
-        // // }
-        // count++;
+            old_real_angle = real_angle;
+        }
+        count++;
 
-        // senseOut();
+        senseOut();
 
-        // // alpha beta
-        // float curr_alpha =
-        //     0.8169496580928 * (sense[0] - 0.5 * (sense[1] + sense[2]));
-        // float curr_beta = 0.7071067811866 * (sense[1] - sense[2]);
+        // alpha beta
+        float curr_alpha =
+            0.8169496580928 * (sense[0] - 0.5 * (sense[1] + sense[2]));
+        float curr_beta = 0.7071067811866 * (sense[1] - sense[2]);
 
-        // // // dq
-        // float curr_d = curr_alpha * cos_table[rotation] +
-        //                curr_beta * cos_table[(rotation + 877) % 1170];
-        // float curr_q = -curr_alpha * cos_table[(rotation + 877) % 1170] +
-        //                curr_beta * cos_table[rotation];
+        // // dq
+        float curr_d = curr_alpha * cos_table[rotation] +
+                       curr_beta * cos_table[(rotation + 877) % 1170];
+        float curr_q = -curr_alpha * cos_table[(rotation + 877) % 1170] +
+                       curr_beta * cos_table[rotation];
 
-        // const float alpha = 0.1;
-        // curr_d_filterd = (1.0 - alpha) * curr_d_filterd + alpha * curr_d;
-        // curr_q_filterd = (1.0 - alpha) * curr_q_filterd + alpha * curr_q;
+        const float alpha = 0.0001;
+        curr_d_filterd = (1.0 - alpha) * curr_d_filterd + alpha * curr_d;
+        curr_q_filterd = (1.0 - alpha) * curr_q_filterd + alpha * curr_q;
 
         // err_d = 0.0 - curr_d;
         // err_d_int += err_d;
@@ -455,9 +459,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
         float vol_d = 0;
         float vol_q = HAL_GetTick() / 1000.0;
-        if (vol_q > 9) {
-            vol_q = 9;
+        if (vol_q > 7) {
+            vol_q = 7;
         }
+
+        vol_q *= 1;
 
         float vol_alpha = vol_d * cos_table[rotation] -
                           vol_q * cos_table[(rotation + 877) % 1170];

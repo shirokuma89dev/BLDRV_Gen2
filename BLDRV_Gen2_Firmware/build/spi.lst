@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
   28:Core/Src/spi.c **** 
   29:Core/Src/spi.c **** /* SPI1 init function */
   30:Core/Src/spi.c **** void MX_SPI1_Init(void)
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 2
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 2
 
 
   31:Core/Src/spi.c **** {
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
   47:Core/Src/spi.c ****   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   67              		.loc 1 47 3 is_stmt 1 view .LVU15
   68              		.loc 1 47 32 is_stmt 0 view .LVU16
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 3
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 3
 
 
   69 0026 0822     		movs	r2, #8
@@ -178,7 +178,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
  107              	.L5:
  108 0048 00000000 		.word	hspi1
  109 004c 00300140 		.word	1073819648
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 4
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 4
 
 
  110              		.cfi_endproc
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
   77:Core/Src/spi.c ****     /**SPI1 GPIO Configuration
   78:Core/Src/spi.c ****     PA5     ------> SPI1_SCK
   79:Core/Src/spi.c ****     PA6     ------> SPI1_MISO
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 5
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 5
 
 
   80:Core/Src/spi.c ****     PA7     ------> SPI1_MOSI
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
  183 0034 5A69     		ldr	r2, [r3, #20]
  184 0036 42F40032 		orr	r2, r2, #131072
  185 003a 5A61     		str	r2, [r3, #20]
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 6
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 6
 
 
   76:Core/Src/spi.c ****     /**SPI1 GPIO Configuration
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
  227              		.section	.text.HAL_SPI_MspDeInit,"ax",%progbits
  228              		.align	1
  229              		.global	HAL_SPI_MspDeInit
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 7
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 7
 
 
  230              		.syntax unified
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
  260              		.loc 1 104 5 is_stmt 1 view .LVU73
  261 000c 064A     		ldr	r2, .L17+4
  262 000e 9369     		ldr	r3, [r2, #24]
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 8
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 8
 
 
  263 0010 23F48053 		bic	r3, r3, #4096
@@ -461,22 +461,22 @@ ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 1
  297              		.file 8 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h"
  298              		.file 9 "Core/Inc/spi.h"
  299              		.file 10 "Core/Inc/main.h"
-ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s 			page 9
+ARM GAS  /var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 spi.c
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:21     .text.MX_SPI1_Init:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:27     .text.MX_SPI1_Init:00000000 MX_SPI1_Init
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:108    .text.MX_SPI1_Init:00000048 $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:287    .bss.hspi1:00000000 hspi1
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:114    .text.HAL_SPI_MspInit:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:120    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:223    .text.HAL_SPI_MspInit:00000064 $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:228    .text.HAL_SPI_MspDeInit:00000000 $t
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:234    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:277    .text.HAL_SPI_MspDeInit:00000024 $d
-/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//ccdywSWU.s:284    .bss.hspi1:00000000 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:21     .text.MX_SPI1_Init:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:27     .text.MX_SPI1_Init:00000000 MX_SPI1_Init
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:108    .text.MX_SPI1_Init:00000048 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:287    .bss.hspi1:00000000 hspi1
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:114    .text.HAL_SPI_MspInit:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:120    .text.HAL_SPI_MspInit:00000000 HAL_SPI_MspInit
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:223    .text.HAL_SPI_MspInit:00000064 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:228    .text.HAL_SPI_MspDeInit:00000000 $t
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:234    .text.HAL_SPI_MspDeInit:00000000 HAL_SPI_MspDeInit
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:277    .text.HAL_SPI_MspDeInit:00000024 $d
+/var/folders/l2/71_2bdwd5hl5fnnvwg2sr4v80000gn/T//cc5KYjaO.s:284    .bss.hspi1:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_SPI_Init
