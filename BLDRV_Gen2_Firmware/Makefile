@@ -226,7 +226,7 @@ clean:
 # upload tool command
 # #######################################
 UPLOAD_TOOL = STM32_Programmer_CLI
-UPLOAD_ARGS = -c port=/dev/tty.usbserial-110 -w $(BUILD_DIR)/$(TARGET).bin 0x08000000
+UPLOAD_ARGS = -c port=/dev/tty.usbserial-10 -w $(BUILD_DIR)/$(TARGET).bin 0x08000000
 
 # #######################################
 # default action: build all

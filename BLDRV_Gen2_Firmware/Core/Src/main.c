@@ -234,7 +234,7 @@ int16_t velocity_ref = 0;
 
 int16_t pwm = 0;
 
-const uint8_t id = 0;
+const uint8_t id = 1;
 uint8_t isReleased = 1;
 /* USER CODE END 0 */
 
@@ -317,19 +317,19 @@ int main(void) {
         cos_table[i] = cos(radians(i * 360.0 / 1170.0));
     }
 
-    // dma_printf_puts("BLDRV Gen2\r\n");
-    // dma_printf_puts("Calibration Start\r\n");
-    // setPhase(0, 100);
-    // HAL_Delay(1000);
+    dma_printf_puts("BLDRV Gen2\r\n");
+    dma_printf_puts("Calibration Start\r\n");
+    setPhase(0, 100);
+    HAL_Delay(1000);
 
-    // offset = getRotation();  // なんか3回いる
-    // offset = getRotation();
-    // dma_printf_puts("Offset: ");
-    // dma_printf_puts(uint2char(offset));
-    // dma_printf_puts("\r\n");
-    // dma_printf_puts("Calibration End\r\n");
+    offset = getRotation();  // なんか3回いる
+    offset = getRotation();
+    dma_printf_puts("Offset: ");
+    dma_printf_puts(uint2char(offset));
+    dma_printf_puts("\r\n");
+    dma_printf_puts("Calibration End\r\n");
 
-    offset = 2853;
+    // offset = 7199;
 
     HAL_TIM_Base_Start_IT(&htim2);
 
@@ -345,8 +345,6 @@ int main(void) {
     while (!(ring_buf[0] == 0B11111111 && ring_buf[1] == 0B11111111)) {
         printf("waiting\t%d\t%d\n", ring_buf[0], ring_buf[1]);
     }
-    ring_buf[0] = 0B01000000;
-    ring_buf[1] = 0B11000000;
 
     printf("start\n");
 
@@ -363,6 +361,10 @@ int main(void) {
                 index = i;
                 break;
             }
+        }
+
+        if (ring_buf[index] == 0B11111111) {
+            continue;
         }
 
         int8_t _ref = ((ring_buf[index] & 0x7F) << 1);
