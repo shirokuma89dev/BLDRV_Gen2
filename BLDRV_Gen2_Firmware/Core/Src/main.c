@@ -317,19 +317,19 @@ int main(void) {
         cos_table[i] = cos(radians(i * 360.0 / 1170.0));
     }
 
-    dma_printf_puts("BLDRV Gen2\r\n");
-    dma_printf_puts("Calibration Start\r\n");
-    setPhase(0, 100);
-    HAL_Delay(1000);
+    // dma_printf_puts("BLDRV Gen2\r\n");
+    // dma_printf_puts("Calibration Start\r\n");
+    // setPhase(0, 100);
+    // HAL_Delay(1000);
 
-    offset = getRotation();  // なんか3回いる
-    offset = getRotation();
-    dma_printf_puts("Offset: ");
-    dma_printf_puts(uint2char(offset));
-    dma_printf_puts("\r\n");
-    dma_printf_puts("Calibration End\r\n");
+    // offset = getRotation();  // なんか3回いる
+    // offset = getRotation();
+    // dma_printf_puts("Offset: ");
+    // dma_printf_puts(uint2char(offset));
+    // dma_printf_puts("\r\n");
+    // dma_printf_puts("Calibration End\r\n");
 
-    // offset = 7199;
+    offset = 2626;
 
     HAL_TIM_Base_Start_IT(&htim2);
 
