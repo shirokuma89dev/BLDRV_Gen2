@@ -275,6 +275,7 @@ int main(void) {
     MX_SPI1_Init();
     MX_USART1_UART_Init();
     MX_ADC1_Init();
+    MX_USART2_UART_Init();
     /* USER CODE BEGIN 2 */
     setbuf(stdin, NULL);
     setbuf(stdout, NULL);
@@ -329,20 +330,30 @@ int main(void) {
     // dma_printf_puts("\r\n");
     // dma_printf_puts("Calibration End\r\n");
 
-    offset = 2626;
+    // while (1) {
+    // }
+    // offset = 4354;  // 1
+    offset = 7869;  // 2
+    // offset = 3270;  // 3
+    // offset = 6116;  // 4
 
     HAL_TIM_Base_Start_IT(&htim2);
 
-    uint8_t ring_buf[2] = {0};
-    ring_buf[0] = 0B01000000;
-    ring_buf[1] = 0B11000000;
+    uint8_t ring_buf[4] = {0};
+    ring_buf[0] = 0B00000000;
+    ring_buf[1] = 0B10000000;
+    ring_buf[2] = 0B00000000;
+    ring_buf[3] = 0B10000000;
 
-    HAL_UART_Receive_DMA(&huart1, ring_buf, 2);
+    HAL_UART_Receive_DMA(&huart2, ring_buf, 4);
 
-    ring_buf[0] = 0B01000000;
-    ring_buf[1] = 0B11000000;
+    ring_buf[0] = 0B00000000;
+    ring_buf[1] = 0B10000000;
+    ring_buf[2] = 0B00000000;
+    ring_buf[3] = 0B10000000;
 
-    while (!(ring_buf[0] == 0B11111111 && ring_buf[1] == 0B11111111)) {
+    while (!(ring_buf[0] == 0B11111111 || ring_buf[1] == 0B11111111 ||
+             ring_buf[2] == 0B11111111 || ring_buf[3] == 0B11111111)) {
         printf("waiting\t%d\t%d\n", ring_buf[0], ring_buf[1]);
     }
 
@@ -356,15 +367,14 @@ int main(void) {
         printf("ref,pwm,real:%d\t%d\t%d\n", velocity_ref, pwm, velocity);
 
         uint8_t index = 0;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             if (ring_buf[i] >> 7 == id) {
                 index = i;
-                break;
-            }
-        }
 
-        if (ring_buf[index] == 0B11111111) {
-            continue;
+                if (ring_buf[index] != 0B11111111) {
+                    break;
+                }
+            }
         }
 
         int8_t _ref = ((ring_buf[index] & 0x7F) << 1);
